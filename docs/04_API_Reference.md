@@ -259,6 +259,10 @@ Lista viajes con filtros. Requiere rol: `admin`, `operador`.
 | `ruta_id` | uuid | Filtra por ruta |
 | `estado` | string | `programado`, `en_curso`, `finalizado`, `cancelado` |
 
+**Implementado en EVE-21:** los límites de fecha son inclusivos y representan días de Argentina (UTC−3). Los viajes se ordenan por salida ascendente. La respuesta contiene `data: Viaje[]` y `meta.total`. Filtros mal formados o un período invertido devuelven `422 VALIDATION_ERROR`.
+
+Cada viaje incluye `id`, `ruta_id`, `vehiculo_id`, `fecha_salida`, `fecha_llegada`, `precio`, `estado`, `asientos_totales`, `created_at`, `ruta: { origen, destino }` y `vehiculo: { patente, tipo }`. Recorrido, tarifa y asientos se copian al programar para conservar el viaje frente a cambios posteriores del catálogo.
+
 ---
 
 ### `GET /viajes/buscar`
@@ -302,6 +306,7 @@ Crea un nuevo viaje. Requiere rol: `admin`.
   "ruta_id": "uuid-ruta",
   "vehiculo_id": "uuid-vehiculo",
   "fecha_salida": "2026-10-10T08:00:00-03:00",
+  "fecha_llegada": "2026-10-10T12:00:00-03:00",
   "precio_override": null
 }
 ```
@@ -311,6 +316,14 @@ Crea un nuevo viaje. Requiere rol: `admin`.
 |---|---|---|
 | 409 | `VEHICLE_CONFLICT` | El vehículo tiene otro viaje en ese horario |
 | 422 | `VALIDATION_ERROR` | Datos de entrada inválidos |
+
+**Precisiones de EVE-20:** `fecha_llegada` es obligatoria y posterior a la salida; ambas fechas deben incluir zona horaria. Se agregó llegada explícita porque la distancia no determina la duración del viaje ni permite validar solapamientos de manera confiable. Los intervalos son `[salida, llegada)`: una unidad puede salir justo cuando termina su viaje anterior. Se consideran todos los viajes no cancelados de la unidad, con control de concurrencia en el backend.
+
+La ruta debe estar activa y la unidad en estado `activo`, con un mapa de asientos válido y códigos únicos. Ruta/unidad inexistentes devuelven `404 RESOURCE_NOT_FOUND`; los recursos no habilitados devuelven `422 INACTIVE_ROUTE`, `UNAVAILABLE_VEHICLE` o `INVALID_LAYOUT`. La tarifa opcional admite hasta dos decimales y debe ser positiva; al omitirla o enviar `null`, se copia la tarifa base. Respuesta `201`: el viaje creado, con estado inicial `programado`. Viaje y asientos iniciales libres se guardan en una sola transacción.
+
+La programación se confirma exclusivamente con la API. Si se corta la conexión durante el alta, consultar el listado antes de reintentar: el servidor podría haber confirmado el viaje aunque no haya llegado la respuesta.
+
+Si hay una conexión PostgreSQL configurada pero no disponible al iniciar, Viajes devuelve `503 STORAGE_UNAVAILABLE` en lugar de programar contra datos locales desactualizados. Sin PostgreSQL configurado, el store híbrido conserva viajes en su snapshot local y admite un solo proceso de servidor.
 
 ---
 

@@ -9,13 +9,14 @@ Ticket: [EVE-16](https://eversys.atlassian.net/browse/EVE-16). Sustituye la pres
 - Acción principal `#254F82`, sidebar `#1D304C`, selección `#C5DEF4`.
 - Manrope para títulos y DM Sans para contenido. Cifras tabulares en tarifas y códigos.
 - Sidebar desde 1024 px; navegación inferior fija, con área segura, por debajo de ese ancho.
-- Rutas, Flota, Asientos y búsqueda global. Se mantienen Ctrl/Cmd+K y Alt+1/2/3.
+- Rutas, Flota, Asientos, Viajes y búsqueda global. Se mantienen Ctrl/Cmd+K y Alt+1/2/3; Viajes incorpora Alt+4 (EVE-22). La navegación móvil contiene cinco accesos.
 
 ## Jerarquía de pantallas
 
 - **Rutas:** resumen de red, filtros, listado de recorridos y detalle con tarifa base y estado. En móvil, distancia y estado pasan al detalle para evitar desplazamiento horizontal.
 - **Flota:** resumen de disponibilidad, filtros y tarjetas de unidad. Edición de datos y acceso al mapa de asientos.
 - **Asientos:** plano central y controles agrupados. Conserva pisos, plantillas, altas/bajas de filas, renumeración, edición de códigos y guardado real.
+- **Viajes:** listado de programación, filtros de período/ruta/estado y alta con salida y llegada explícitas. Horarios en Argentina (UTC−3), independientemente de la zona del dispositivo. Tarjetas en móvil y tabla en desktop. Errores de conflicto visibles, sin alta offline simulada.
 - Se retiran de la presentación yield, duraciones estimadas, tarifas calculadas sin contrato, sugerencias de flota, payloads y referencias de implementación.
 
 ## Formularios y accesibilidad

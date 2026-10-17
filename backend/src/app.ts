@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { store, contarAsientosLayout, PisoLayout } from './db/store';
+import { ESTADOS_VIAJE, isUuid, validDay, validTimestamp, ViajeError } from './viajes';
 
 export const app = express();
 
@@ -442,12 +443,54 @@ app.post('/v1/vehiculos/:id/layout', async (req: Request, res: Response, next: N
   }
 });
 
+// Programación de viajes (EVE-20, EVE-21)
+app.post('/v1/viajes', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { ruta_id, vehiculo_id, fecha_salida, fecha_llegada, precio_override } = req.body || {};
+    const errors: Record<string, string> = {};
+    if (!isUuid(ruta_id)) errors.ruta_id = 'Seleccioná una ruta válida.';
+    if (!isUuid(vehiculo_id)) errors.vehiculo_id = 'Seleccioná una unidad válida.';
+    if (!validTimestamp(fecha_salida)) errors.fecha_salida = 'Ingresá una salida ISO válida con zona horaria.';
+    if (!validTimestamp(fecha_llegada)) errors.fecha_llegada = 'Ingresá una llegada ISO válida con zona horaria.';
+    if (validTimestamp(fecha_salida) && validTimestamp(fecha_llegada) && Date.parse(fecha_llegada) <= Date.parse(fecha_salida)) {
+      errors.fecha_llegada = 'La llegada debe ser posterior a la salida.';
+    }
+    if (precio_override !== undefined && precio_override !== null &&
+      (typeof precio_override !== 'number' || !Number.isFinite(precio_override) || precio_override < 0.01 || precio_override > 9999999999.99 || Math.abs(precio_override * 100 - Math.round(precio_override * 100)) > 0.000001)) {
+      errors.precio_override = 'La tarifa debe ser positiva, con hasta dos decimales.';
+    }
+    if (Object.keys(errors).length) return sendError(res, 422, 'VALIDATION_ERROR', 'Revisá los datos del viaje.', errors);
+    const viaje = await store.createViaje({ ruta_id, vehiculo_id, fecha_salida, fecha_llegada, precio_override });
+    return sendSuccess(res, viaje, 201);
+  } catch (err) { next(err); }
+});
+
+app.get('/v1/viajes', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { fecha_desde, fecha_hasta, ruta_id, estado } = req.query;
+    const errors: Record<string, string> = {};
+    if (fecha_desde !== undefined && !validDay(fecha_desde)) errors.fecha_desde = 'Usá una fecha válida YYYY-MM-DD.';
+    if (fecha_hasta !== undefined && !validDay(fecha_hasta)) errors.fecha_hasta = 'Usá una fecha válida YYYY-MM-DD.';
+    if (validDay(fecha_desde) && validDay(fecha_hasta) && fecha_hasta < fecha_desde) errors.fecha_hasta = 'El fin del período no puede ser anterior al inicio.';
+    if (ruta_id !== undefined && !isUuid(ruta_id)) errors.ruta_id = 'La ruta no es válida.';
+    if (estado !== undefined && (typeof estado !== 'string' || !ESTADOS_VIAJE.includes(estado as typeof ESTADOS_VIAJE[number]))) errors.estado = 'El estado no es válido.';
+    if (Object.keys(errors).length) return sendError(res, 422, 'VALIDATION_ERROR', 'Revisá los filtros de viajes.', errors);
+    const items = await store.listViajes({
+      desde: fecha_desde ? `${fecha_desde}T00:00:00-03:00` : undefined,
+      hasta: fecha_hasta ? new Date(Date.parse(`${fecha_hasta}T00:00:00-03:00`) + 86400000).toISOString() : undefined,
+      ruta_id: ruta_id as string | undefined, estado: estado as string | undefined
+    });
+    return sendSuccess(res, items, 200, { total: items.length });
+  } catch (err) { next(err); }
+});
+
 // Middleware 404 y Error Global
 app.use((_req: Request, res: Response) => {
   return sendError(res, 404, 'RESOURCE_NOT_FOUND', 'Endpoint no encontrado en EverTrip API v1.');
 });
 
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+  if (err instanceof ViajeError) return sendError(res, err.status, err.code, err.message);
   console.error('[EverTrip API Error]:', err);
   return sendError(res, 500, 'INTERNAL_ERROR', 'Error interno del servidor.');
 });

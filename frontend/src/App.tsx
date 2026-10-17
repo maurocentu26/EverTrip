@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AlertCircle, Armchair, ArrowRight, BusFront, Check, ChevronRight, Compass, Plus, Route, Search, X } from 'lucide-react';
+import { AlertCircle, Armchair, ArrowRight, BusFront, CalendarDays, Check, ChevronRight, Compass, Plus, Route, Search, X } from 'lucide-react';
 import { getConnectionSource, getRutas, getVehiculos, subscribeConnectionSource, formatPatenteMercosur, type Ruta, type Vehiculo } from './services/api';
 import { formatARS } from './utils/formatters';
 import { RoutesView } from './views/RoutesView';
 import { FleetView } from './views/FleetView';
 import { LayoutEditorView } from './views/LayoutEditorView';
+import { TripsView } from './views/TripsView';
 import { Modal } from './components/Modal';
 import './terminal.css';
 
-type ActiveModule = 'rutas' | 'flota' | 'layout';
+type ActiveModule = 'rutas' | 'flota' | 'layout' | 'viajes';
 interface ToastNotification { id: string; message: string; type: 'success' | 'warning' | 'error'; }
-const navItems = [{ id: 'rutas', label: 'Rutas', icon: Route }, { id: 'flota', label: 'Flota', icon: BusFront }, { id: 'layout', label: 'Asientos', icon: Armchair }] as const;
+const navItems = [{ id: 'rutas', label: 'Rutas', icon: Route }, { id: 'flota', label: 'Flota', icon: BusFront }, { id: 'layout', label: 'Asientos', icon: Armchair }, { id: 'viajes', label: 'Viajes', icon: CalendarDays }] as const;
 
 export function App() {
   const [activeModule, setActiveModule] = useState<ActiveModule>('rutas');
@@ -44,7 +45,7 @@ export function App() {
       if (document.querySelector('dialog[open]')) return;
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setSelectedRutaId(null); setCommandQuery(''); setCommandOpen(true); return; }
       if ((e.target as HTMLElement)?.closest('input,textarea,select')) return;
-      if (e.altKey && ['1','2','3'].includes(e.key)) { e.preventDefault(); setActiveModule(navItems[Number(e.key) - 1].id); }
+      if (e.altKey && ['1','2','3','4'].includes(e.key)) { e.preventDefault(); setActiveModule(navItems[Number(e.key) - 1].id); }
     };
     window.addEventListener('keydown', keydown); return () => window.removeEventListener('keydown', keydown);
   }, []);
@@ -61,6 +62,7 @@ export function App() {
         {activeModule === 'rutas' && <RoutesView externalSelectedId={selectedRutaId} rutas={rutas} loading={loading} onRefresh={loadAllData} onNotify={addNotification} externalCreateTrigger={createRutaTrigger}/>}
         {activeModule === 'flota' && <FleetView vehiculos={vehiculos} loading={loading} onRefresh={loadAllData} onNotify={addNotification} onOpenLayoutEditor={openLayout} externalCreateTrigger={createVehiculoTrigger}/>}
         {activeModule === 'layout' && (loading && !vehiculos.length ? <div className="et-empty" role="status">Cargando unidades…</div> : <LayoutEditorView vehiculos={vehiculos} selectedVehiculoId={selectedVehiculoId} onSelectVehiculo={setSelectedVehiculoId} onRefresh={loadAllData} onNotify={addNotification}/>)}
+        {activeModule === 'viajes' && <TripsView rutas={rutas} vehiculos={vehiculos} catalogLoading={loading} onNotify={addNotification}/>}
         <footer className="et-page-footer"><span>EVERTRIP TERMINAL</span><span>El camino, más simple.</span></footer>
       </main>
     </div>

@@ -63,6 +63,38 @@ export interface VehiculoInput {
   pisos?: 1 | 2;
 }
 
+export interface Viaje {
+  id: string; ruta_id: string; vehiculo_id: string;
+  fecha_salida: string; fecha_llegada: string; precio: number;
+  estado: 'programado' | 'en_curso' | 'finalizado' | 'cancelado';
+  ruta: { origen: string; destino: string };
+  vehiculo: { patente: string; tipo: string };
+  asientos_totales: number; created_at: string;
+}
+export interface ViajeInput {
+  ruta_id: string; vehiculo_id: string; fecha_salida: string; fecha_llegada: string;
+  precio_override?: number | null;
+}
+export interface ViajeFilters { fecha_desde?: string; fecha_hasta?: string; ruta_id?: string; estado?: string; }
+
+export async function getViajes(filters: ViajeFilters = {}): Promise<Viaje[]> {
+  const params = new URLSearchParams();
+  for (const [key,value] of Object.entries(filters)) if (value) params.set(key,value);
+  try { return await requestApi<Viaje[]>(`/viajes?${params}`); }
+  catch (err) {
+    if (err instanceof ApiError) throw err;
+    throw new ApiError(503, 'CONNECTION_ERROR', 'No se pudieron consultar los viajes. Revisá la conexión e intentá nuevamente.');
+  }
+}
+
+export async function createViaje(input: ViajeInput): Promise<Viaje> {
+  try { return await requestApi<Viaje>('/viajes', { method: 'POST', body: JSON.stringify(input) }); }
+  catch (err) {
+    if (err instanceof ApiError) throw err;
+    throw new ApiError(503, 'CONNECTION_ERROR', 'No se pudo confirmar el alta. Actualizá los viajes antes de reintentar para comprobar si se guardó.');
+  }
+}
+
 export class ApiError extends Error {
   status: number;
   code: string;
@@ -438,6 +470,7 @@ async function requestApi<T>(path: string, options?: RequestInit): Promise<T> {
 export async function getRutas(filters?: { origen?: string; destino?: string }): Promise<Ruta[]> {
   try {
     const params = new URLSearchParams();
+    params.set('activa', 'all');
     if (filters?.origen) params.set('origen', filters.origen);
     if (filters?.destino) params.set('destino', filters.destino);
     const qs = params.toString() ? `?${params.toString()}` : '';

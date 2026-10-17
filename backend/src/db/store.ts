@@ -2,6 +2,7 @@ import { Pool } from 'pg';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import path from 'path';
+import { AsientoViaje, Viaje, ViajeError, ViajeFilters, ViajeInput } from '../viajes';
 
 export interface Ruta {
   id: string;
@@ -230,9 +231,11 @@ const INITIAL_VEHICULOS: Vehiculo[] = [
 class DataStore {
   private pool: Pool | null = null;
   private usePostgres = false;
-  private initialized = false;
+  private schedulingStorageUnavailable = false;
+  private initialization: Promise<void> | null = null;
   private rutas: Ruta[] = [];
   private vehiculos: Vehiculo[] = [];
+  private viajes: (Viaje & { asientos: AsientoViaje[] })[] = [];
   private dataFilePath: string;
 
   constructor() {
@@ -243,20 +246,23 @@ class DataStore {
   public resetToSeeds(persist = false): void {
     this.rutas = JSON.parse(JSON.stringify(INITIAL_RUTAS));
     this.vehiculos = JSON.parse(JSON.stringify(INITIAL_VEHICULOS));
+    this.viajes = [];
     if (persist) {
       this.saveLocalSnapshot();
     }
   }
 
-  private saveLocalSnapshot(): void {
+  private saveLocalSnapshot(strict = false): void {
     if (process.env.NODE_ENV === 'test') return;
     try {
       fs.writeFileSync(
-        this.dataFilePath,
-        JSON.stringify({ rutas: this.rutas, vehiculos: this.vehiculos }, null, 2),
+        `${this.dataFilePath}.tmp`,
+        JSON.stringify({ rutas: this.rutas, vehiculos: this.vehiculos, viajes: this.viajes }, null, 2),
         'utf-8'
       );
-    } catch {
+      fs.renameSync(`${this.dataFilePath}.tmp`, this.dataFilePath);
+    } catch (err) {
+      if (strict) throw err;
       // Ignorar si el sistema de archivos es de solo lectura
     }
   }
@@ -267,6 +273,7 @@ class DataStore {
       if (fs.existsSync(this.dataFilePath)) {
         const raw = fs.readFileSync(this.dataFilePath, 'utf-8');
         const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed.viajes)) this.viajes = parsed.viajes;
         if (Array.isArray(parsed.rutas) && parsed.rutas.length > 0) {
           this.rutas = parsed.rutas;
         }
@@ -279,9 +286,14 @@ class DataStore {
     }
   }
 
-  public async init(): Promise<void> {
-    if (this.initialized) return;
-    this.initialized = true;
+  public init(): Promise<void> {
+    if (!this.initialization) {
+      this.initialization = this.initialize().catch(err => { this.initialization = null; throw err; });
+    }
+    return this.initialization;
+  }
+
+  private async initialize(): Promise<void> {
 
     const dbUrl = process.env.DATABASE_URL;
     if (dbUrl && process.env.FORCE_MEMORY_STORE !== 'true' && process.env.NODE_ENV !== 'test') {
@@ -296,6 +308,7 @@ class DataStore {
         await this.ensurePostgresSchema();
         return;
       } catch {
+        this.schedulingStorageUnavailable = true;
         this.usePostgres = false;
         this.pool = null;
       }
@@ -306,10 +319,9 @@ class DataStore {
 
   private async ensurePostgresSchema(): Promise<void> {
     if (!this.pool) return;
-    const sqlPath = path.join(__dirname, '../../migrations/001_initial_catalog.sql');
-    if (fs.existsSync(sqlPath)) {
-      const sql = fs.readFileSync(sqlPath, 'utf-8');
-      await this.pool.query(sql);
+    for (const migration of ['001_initial_catalog.sql', '002_viajes.sql']) {
+      const sqlPath = path.join(__dirname, '../../migrations', migration);
+      await this.pool.query(fs.readFileSync(sqlPath, 'utf-8'));
     }
     const { rows } = await this.pool.query('SELECT COUNT(*)::int AS cnt FROM vehiculos');
     if (rows[0].cnt === 0) {
@@ -325,6 +337,94 @@ class DataStore {
 
   public getEngineMode(): 'postgresql' | 'memory-hybrid' {
     return this.usePostgres ? 'postgresql' : 'memory-hybrid';
+  }
+
+  // ==================== VIAJES (EVE-19, EVE-20, EVE-21) ====================
+  public async listViajes(filters: ViajeFilters): Promise<Viaje[]> {
+    await this.init();
+    if (this.schedulingStorageUnavailable) throw new ViajeError(503, 'STORAGE_UNAVAILABLE', 'La base de programación no está disponible. No se usará una copia local desactualizada.');
+    if (this.usePostgres && this.pool) {
+      const { rows } = await this.pool.query(
+        `SELECT v.*, v.precio::float AS precio,
+           (SELECT COUNT(*)::int FROM asientos_viaje a WHERE a.viaje_id = v.id) AS asientos_totales
+         FROM viajes v
+         WHERE ($1::timestamptz IS NULL OR fecha_salida >= $1)
+           AND ($2::timestamptz IS NULL OR fecha_salida < $2)
+           AND ($3::uuid IS NULL OR ruta_id = $3)
+           AND ($4::text IS NULL OR estado = $4)
+         ORDER BY fecha_salida, id`,
+        [filters.desde || null, filters.hasta || null, filters.ruta_id || null, filters.estado || null]
+      );
+      return rows;
+    }
+    return this.viajes.filter(v => (!filters.desde || Date.parse(v.fecha_salida) >= Date.parse(filters.desde)) &&
+      (!filters.hasta || Date.parse(v.fecha_salida) < Date.parse(filters.hasta)) &&
+      (!filters.ruta_id || v.ruta_id === filters.ruta_id) && (!filters.estado || v.estado === filters.estado))
+      .sort((a,b) => Date.parse(a.fecha_salida) - Date.parse(b.fecha_salida) || a.id.localeCompare(b.id))
+      .map(({ asientos, ...viaje }) => viaje);
+  }
+
+  private buildViaje(input: ViajeInput, ruta?: Ruta, vehiculo?: Vehiculo): Viaje & { asientos: AsientoViaje[] } {
+    if (!ruta) throw new ViajeError(404, 'RESOURCE_NOT_FOUND', 'La ruta seleccionada no existe.');
+    if (!vehiculo) throw new ViajeError(404, 'RESOURCE_NOT_FOUND', 'La unidad seleccionada no existe.');
+    if (!ruta.activa) throw new ViajeError(422, 'INACTIVE_ROUTE', 'La ruta seleccionada está inactiva.');
+    if (vehiculo.estado !== 'activo') throw new ViajeError(422, 'UNAVAILABLE_VEHICLE', 'La unidad no está disponible para programar viajes.');
+    const asientos = vehiculo.layout.flatMap(p => p.filas.flatMap(f => f.asientos
+      .filter((n): n is string => typeof n === 'string' && !!n.trim())
+      .map(numero => ({ numero: numero.trim(), piso: p.piso, estado: 'libre' as const }))));
+    if (!asientos.length || asientos.some(a => ![1,2].includes(a.piso) || a.piso > vehiculo.pisos) || new Set(asientos.map(a => a.numero)).size !== asientos.length) {
+      throw new ViajeError(422, 'INVALID_LAYOUT', 'La unidad necesita un mapa de asientos válido, con códigos únicos.');
+    }
+    const precio = input.precio_override ?? Number(ruta.precio_base);
+    if (!Number.isFinite(precio) || precio < 0.01 || precio > 9999999999.99) throw new ViajeError(422, 'VALIDATION_ERROR', 'La tarifa del viaje no es válida.');
+    return { id: uuidv4(), ruta_id: ruta.id, vehiculo_id: vehiculo.id,
+      fecha_salida: new Date(input.fecha_salida).toISOString(), fecha_llegada: new Date(input.fecha_llegada).toISOString(),
+      precio: Math.round(precio * 100) / 100, estado: 'programado',
+      ruta: { origen: ruta.origen, destino: ruta.destino }, vehiculo: { patente: vehiculo.patente, tipo: vehiculo.tipo },
+      asientos_totales: asientos.length, asientos, created_at: new Date().toISOString() };
+  }
+
+  public async createViaje(input: ViajeInput): Promise<Viaje> {
+    await this.init();
+    if (this.schedulingStorageUnavailable) throw new ViajeError(503, 'STORAGE_UNAVAILABLE', 'La base de programación no está disponible. Intentá nuevamente cuando se restablezca.');
+    if (this.usePostgres && this.pool) {
+      const client = await this.pool.connect();
+      try {
+        await client.query('BEGIN');
+        // Lock the unit before checking schedules: concurrent requests must see the first commit.
+        const vehicle = await client.query('SELECT * FROM vehiculos WHERE id = $1 FOR UPDATE', [input.vehiculo_id]);
+        const route = await client.query('SELECT * FROM rutas WHERE id = $1 FOR SHARE', [input.ruta_id]);
+        const record = this.buildViaje(input, route.rows[0], vehicle.rows[0]);
+        const conflict = await client.query(
+          `SELECT id FROM viajes WHERE vehiculo_id = $1 AND estado <> 'cancelado'
+           AND fecha_salida < $3 AND fecha_llegada > $2 LIMIT 1`,
+          [input.vehiculo_id, record.fecha_salida, record.fecha_llegada]);
+        if (conflict.rowCount) throw new ViajeError(409, 'VEHICLE_CONFLICT', 'La unidad ya tiene un viaje en ese horario.');
+        await client.query(
+          `INSERT INTO viajes (id,ruta_id,vehiculo_id,fecha_salida,fecha_llegada,precio,estado,ruta,vehiculo)
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+          [record.id, record.ruta_id, record.vehiculo_id, record.fecha_salida, record.fecha_llegada, record.precio, record.estado, JSON.stringify(record.ruta), JSON.stringify(record.vehiculo)]);
+        await client.query(
+          `INSERT INTO asientos_viaje (viaje_id,numero,piso,estado)
+           SELECT $1, a.numero, a.piso, a.estado FROM jsonb_to_recordset($2::jsonb) AS a(numero text,piso smallint,estado text)`,
+          [record.id, JSON.stringify(record.asientos)]);
+        await client.query('COMMIT');
+        const { asientos, ...viaje } = record;
+        return viaje;
+      } catch (err) { await client.query('ROLLBACK'); throw err; }
+      finally { client.release(); }
+    }
+    // shortcut: Local scheduling requires one server process; use PostgreSQL before running multiple instances.
+    // No await between conflict detection and insertion in the single-process local engine.
+    const record = this.buildViaje(input, this.rutas.find(r => r.id === input.ruta_id), this.vehiculos.find(v => v.id === input.vehiculo_id));
+    if (this.viajes.some(v => v.vehiculo_id === record.vehiculo_id && v.estado !== 'cancelado' &&
+      Date.parse(v.fecha_salida) < Date.parse(record.fecha_llegada) && Date.parse(v.fecha_llegada) > Date.parse(record.fecha_salida))) {
+      throw new ViajeError(409, 'VEHICLE_CONFLICT', 'La unidad ya tiene un viaje en ese horario.');
+    }
+    this.viajes.push(record);
+    try { this.saveLocalSnapshot(true); } catch (err) { this.viajes.pop(); throw err; }
+    const { asientos, ...viaje } = record;
+    return viaje;
   }
 
   // ==================== RUTAS ====================

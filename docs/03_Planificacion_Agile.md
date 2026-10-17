@@ -3,6 +3,19 @@
 
 > Los IDs EVE-100 en adelante que aparecen en este plan son referencias de planificación, no claves vigentes del tablero. Consultar Jira antes de crear ramas o commits. Para el catálogo implementado, las UI corresponden a EVE-5 (Rutas), EVE-9 (Flota) y EVE-13 (Asientos). El rediseño Terminal se registra en [EVE-16](https://eversys.atlassian.net/browse/EVE-16), con su especificación en [05_Diseno_Consola_Terminal.md](05_Diseno_Consola_Terminal.md).
 
+## IDs vigentes — Programación de Viajes
+
+| Referencia del plan | Ticket de Jira | Alcance |
+|---|---|---|
+| EVE-200 | [EVE-17](https://eversys.atlassian.net/browse/EVE-17) | Épica Operatoria, Viajes y Check-in |
+| EVE-201 | [EVE-18](https://eversys.atlassian.net/browse/EVE-18) | Programación de viajes |
+| EVE-211 | [EVE-19](https://eversys.atlassian.net/browse/EVE-19) | Modelo, migración y snapshot de asientos |
+| EVE-212 | [EVE-20](https://eversys.atlassian.net/browse/EVE-20) | POST y validación de solapamientos |
+| EVE-213 | [EVE-21](https://eversys.atlassian.net/browse/EVE-21) | GET con filtros |
+| EVE-214 | [EVE-22](https://eversys.atlassian.net/browse/EVE-22) | Formulario y listado responsive |
+
+La programación requiere salida y llegada explícitas en horario argentino. Manifiestos, check-in, reservas y venta siguen siendo incrementos posteriores; no se dan por implementados al completar EVE-18.
+
 Este documento desglosa el trabajo en Épicas, Historias de Usuario y **Sub-Tickets técnicos** (Frontend / Backend) para facilitar la asignación individual dentro del equipo.
 
 ---
