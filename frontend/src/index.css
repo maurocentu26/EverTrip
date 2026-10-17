@@ -5,21 +5,31 @@
     --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
     --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
     --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-    --bg-base: #090D16;
-    --bg-surface: #0F1623;
-    --bg-elevated: #141E30;
+
+    /* Midnight Transit Obsidian Palette (EVE-15) */
+    --bg-obsidian: #07090E;
+    --bg-surface: #0D111A;
+    --bg-elevated: #131926;
+    --border-hairline: rgba(255, 255, 255, 0.07);
+    --border-hairline-strong: rgba(255, 255, 255, 0.13);
+
+    --accent-amber: #F59E0B;
+    --accent-emerald: #10B981;
+    --accent-orange: #F97316;
   }
 
   body {
-    background-color: #090D16;
+    background-color: var(--bg-obsidian);
     color: #F1F5F9;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.011em;
     overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
   }
 
   h1, h2, h3, h4, .font-display {
-    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
-    letter-spacing: -0.02em;
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.025em;
   }
 
   .font-mono-tabular {
@@ -28,28 +38,52 @@
   }
 }
 
-/* Precision operational console background pattern */
-.bg-console-grid {
-  background-color: #090D16;
-  background-image: 
-    linear-gradient(to right, rgba(30, 41, 59, 0.22) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(30, 41, 59, 0.22) 1px, transparent 1px);
-  background-size: 32px 32px;
+/* Surface & Border utilities */
+.surface-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
 }
 
+.surface-elevated {
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-hairline-strong);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.75);
+}
+
+.border-hairline {
+  border-color: var(--border-hairline);
+}
+
+/* Precision operational console background pattern */
+.bg-console-grid {
+  background-color: #07090E;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.045), transparent 55%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.024) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.024) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+}
+
+/* Automotive & Aviation Telemetry Blueprint Grid */
 .bg-blueprint-grid {
-  background-color: #0A101D;
-  background-image: 
-    linear-gradient(to right, rgba(56, 189, 248, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.06) 1px, transparent 1px),
-    linear-gradient(to right, rgba(56, 189, 248, 0.12) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.12) 1px, transparent 1px);
-  background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+  background-color: #06080D;
+  background-image:
+    radial-gradient(circle at 50% 15%, rgba(245, 158, 11, 0.06), transparent 60%),
+    linear-gradient(to right, rgba(56, 189, 248, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.045) 1px, transparent 1px),
+    linear-gradient(to right, rgba(56, 189, 248, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.1) 1px, transparent 1px);
+  background-size: 100% 100%, 16px 16px, 16px 16px, 80px 80px, 80px 80px;
 }
 
 /* Emil Kowalski tactile button press */
 .btn-tactile {
-  transition: transform 140ms var(--ease-out-strong), background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+  transition:
+    transform 140ms var(--ease-out-strong),
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .btn-tactile:active:not(:disabled) {
@@ -57,7 +91,11 @@
 }
 
 .seat-cell {
-  transition: transform 140ms var(--ease-out-strong), background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+  transition:
+    transform 140ms var(--ease-out-strong),
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .seat-cell:active:not(:disabled) {
@@ -70,7 +108,7 @@
   }
 }
 
-/* Staggered list item entrance */
+/* Staggered list & inspector entrance */
 @keyframes consoleEnter {
   from {
     opacity: 0;
@@ -83,7 +121,7 @@
 }
 
 .animate-console-enter {
-  animation: consoleEnter 220ms var(--ease-out-strong) forwards;
+  animation: consoleEnter 200ms var(--ease-out-strong) forwards;
 }
 
 @keyframes modalBackdropEnter {
@@ -102,12 +140,32 @@
   }
 }
 
+@keyframes sheetSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-modal-backdrop {
-  animation: modalBackdropEnter 180ms ease-out forwards;
+  animation: modalBackdropEnter 160ms ease-out forwards;
 }
 
 .animate-modal-panel {
-  animation: modalPanelEnter 220ms var(--ease-out-strong) forwards;
+  animation: modalPanelEnter 210ms var(--ease-out-strong) forwards;
+}
+
+.animate-sheet-up {
+  animation: sheetSlideUp 260ms var(--ease-drawer) forwards;
+}
+
+/* Safe area padding for iPhone thumb-zone bottom bar */
+.pb-safe-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -115,7 +173,8 @@
   .seat-cell,
   .animate-console-enter,
   .animate-modal-backdrop,
-  .animate-modal-panel {
+  .animate-modal-panel,
+  .animate-sheet-up {
     animation: none !important;
     transition: opacity 150ms ease !important;
     transform: none !important;
@@ -129,14 +188,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #090D16;
+  background: #07090E;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #1B2333;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #2C3850;
 }
