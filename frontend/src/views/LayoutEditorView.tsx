@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  Grid,
   Layers,
   Sparkles,
   Plus,
@@ -342,35 +341,35 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
   return (
     <div className="space-y-5 pb-24 lg:pb-8">
       {/* Top Designer Control Header */}
-      <div className="bg-[#0D111A] border border-white/[0.07] rounded-xl p-5 space-y-4">
+      <div className="bg-white border border-slate-200 rounded-xl p-5 space-y-4 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
         <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
           <div className="space-y-1">
-            <div className="flex items-center gap-2 text-[11px] font-mono-tabular uppercase tracking-widest text-amber-400">
+            <div className="flex items-center gap-2 text-[11px] font-mono-tabular uppercase tracking-widest text-blue-600 font-semibold">
               <Cpu className="w-3.5 h-3.5" />
               <span>MÓDULO 03 · INGENIERO DE CHASIS & CABINA · EVE-13</span>
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-100 font-display">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
               Editor Interactivo de Layout y Mapa de Asientos
             </h1>
-            <p className="text-xs sm:text-sm text-slate-400">
+            <p className="text-xs sm:text-sm text-slate-600">
               Plano CAD en perspectiva superior (Blueprint): configurá niveles, pasillos, butacas físicas y códigos alfanuméricos.
             </p>
           </div>
 
           {/* Vehicle Selector + Primary Save CTA */}
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 bg-[#07090E] border border-white/[0.09] rounded-xl px-3.5 py-2">
-              <span className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400">
+            <div className="flex items-center gap-2 bg-[#F8FAFC] border border-slate-200 rounded-xl px-3.5 py-2">
+              <span className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-500 font-semibold">
                 UNIDAD:
               </span>
               <select
                 value={activeVehiculo?.id || ''}
                 onChange={(e) => onSelectVehiculo(e.target.value)}
                 aria-label="Seleccionar vehículo de la flota"
-                className="bg-transparent text-xs sm:text-sm font-mono-tabular font-bold text-slate-100 focus:outline-none cursor-pointer pr-2"
+                className="bg-transparent text-xs sm:text-sm font-mono-tabular font-bold text-slate-900 focus:outline-none cursor-pointer pr-2"
               >
                 {vehiculos.map((v) => (
-                  <option key={v.id} value={v.id} className="bg-[#07090E] text-slate-100">
+                  <option key={v.id} value={v.id} className="bg-white text-slate-900">
                     {formatPatenteMercosur(v.patente)} · {v.interno || 'FLOTA'} ({v.capacidad_asientos} pax)
                   </option>
                 ))}
@@ -381,10 +380,10 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
               type="button"
               onClick={handleSaveDistribution}
               disabled={saving || !activeVehiculo}
-              className={`btn-tactile inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm cursor-pointer shadow-lg ${
+              className={`btn-tactile inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm cursor-pointer shadow-sm ${
                 justSaved
-                  ? 'bg-emerald-500 text-slate-950 shadow-[0_0_24px_rgba(16,185,129,0.4)]'
-                  : 'bg-[#F59E0B] hover:bg-amber-400 text-slate-950 shadow-[0_0_24px_rgba(245,158,11,0.3)]'
+                  ? 'bg-[#10B981] text-white'
+                  : 'bg-[#2563EB] hover:bg-blue-700 text-white'
               }`}
             >
               {justSaved ? (
@@ -404,21 +403,21 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
 
         {/* Selected Vehicle Telemetry Strip */}
         {activeVehiculo && (
-          <div className="pt-4 border-t border-white/[0.07] flex flex-wrap items-center justify-between gap-4">
+          <div className="pt-4 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-4">
               <MercosurPlate patente={activeVehiculo.patente} size="sm" />
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-slate-100">
+                  <span className="text-sm font-bold text-slate-900">
                     {activeVehiculo.marca_modelo || 'Chasis Larga Distancia'}
                   </span>
-                  <span className="text-[11px] font-mono-tabular px-2 py-0.5 rounded bg-[#131926] border border-white/[0.08] text-amber-400 font-semibold">
+                  <span className="text-[11px] font-mono-tabular px-2 py-0.5 rounded bg-[#F1F5F9] border border-slate-200 text-slate-700 font-bold">
                     {activeVehiculo.interno || 'INT-100'}
                   </span>
                 </div>
                 <div className="mt-1 flex flex-wrap items-center gap-2">
                   <span
-                    className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium border ${serviceBadge.badgeClass}`}
+                    className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold border ${serviceBadge.badgeClass}`}
                   >
                     <span className={`w-1.5 h-1.5 rounded-full ${serviceBadge.dotClass}`} />
                     {serviceBadge.label}
@@ -431,34 +430,34 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
             </div>
 
             {/* Real-time Seat Counter Badges */}
-            <div className="px-3.5 py-2 rounded-xl bg-[#07090E] border border-white/[0.08] flex items-center gap-3.5">
+            <div className="px-3.5 py-2 rounded-xl bg-[#F8FAFC] border border-slate-200 flex items-center gap-3.5">
               <div className="text-right">
-                <div className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400">
+                <div className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-500">
                   Planta Baja (P1)
                 </div>
-                <div className="text-xs sm:text-sm font-bold font-mono-tabular text-emerald-400">
+                <div className="text-xs sm:text-sm font-bold font-mono-tabular text-blue-700">
                   {floor1Seats} butacas
                 </div>
               </div>
               {pisosCount === 2 && (
                 <>
-                  <div className="h-6 w-[1px] bg-white/[0.08]" />
+                  <div className="h-6 w-[1px] bg-slate-200" />
                   <div className="text-right">
-                    <div className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400">
+                    <div className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-500">
                       Planta Alta (P2)
                     </div>
-                    <div className="text-xs sm:text-sm font-bold font-mono-tabular text-sky-400">
+                    <div className="text-xs sm:text-sm font-bold font-mono-tabular text-cyan-700">
                       {floor2Seats} butacas
                     </div>
                   </div>
                 </>
               )}
-              <div className="h-6 w-[1px] bg-white/[0.08]" />
+              <div className="h-6 w-[1px] bg-slate-200" />
               <div className="text-right">
-                <div className="text-[10px] font-mono-tabular uppercase tracking-wider text-amber-400">
+                <div className="text-[10px] font-mono-tabular uppercase tracking-wider text-blue-600 font-semibold">
                   Total Asignadas
                 </div>
-                <div className="text-base sm:text-lg font-extrabold font-mono-tabular text-amber-400 leading-none">
+                <div className="text-base sm:text-lg font-extrabold font-mono-tabular text-slate-900 leading-none">
                   {totalSeatsAssigned} plazas
                 </div>
               </div>
@@ -472,13 +471,13 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
         {/* Left Sidebar: Floor Architecture + 1-Click Templates + Row Tools */}
         <div className="lg:col-span-4 space-y-4">
           {/* 1. Floor Configuration Switcher */}
-          <div className="bg-[#0D111A] border border-white/[0.07] rounded-xl p-4 space-y-3">
+          <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono-tabular uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                <Layers className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-xs font-mono-tabular uppercase tracking-wider text-slate-700 font-semibold flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-blue-600" />
                 Configuración de Niveles
               </span>
-              <span className="text-[11px] font-mono-tabular text-slate-400">
+              <span className="text-[11px] font-mono-tabular text-slate-500">
                 {pisosCount === 2 ? 'Doble Piso (DD)' : 'Piso Único'}
               </span>
             </div>
@@ -489,8 +488,8 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                 onClick={() => handleSwitchPisosCount(1)}
                 className={`btn-tactile py-2.5 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer ${
                   pisosCount === 1
-                    ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
-                    : 'bg-[#07090E] border-white/[0.08] text-slate-400 hover:text-slate-200'
+                    ? 'bg-[#EFF6FF] border-[#BFDBFE] text-[#1D4ED8]'
+                    : 'bg-[#F8FAFC] border-slate-200 text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <span>1 Piso (Simple)</span>
@@ -500,8 +499,8 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                 onClick={() => handleSwitchPisosCount(2)}
                 className={`btn-tactile py-2.5 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-2 cursor-pointer ${
                   pisosCount === 2
-                    ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
-                    : 'bg-[#07090E] border-white/[0.08] text-slate-400 hover:text-slate-200'
+                    ? 'bg-[#EFF6FF] border-[#BFDBFE] text-[#1D4ED8]'
+                    : 'bg-[#F8FAFC] border-slate-200 text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <span>2 Pisos (Doble Piso)</span>
@@ -510,14 +509,14 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
           </div>
 
           {/* 2. Quick 1-Click Templates */}
-          <div className="bg-[#0D111A] border border-white/[0.07] rounded-xl p-4 space-y-3">
+          <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono-tabular uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <span className="text-xs font-mono-tabular uppercase tracking-wider text-blue-600 font-semibold flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5" />
                 Plantillas Rápidas (1 Clic)
               </span>
             </div>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-600">
               Precargá una configuración de carrocería homologada y personalizá cualquier fila.
             </p>
 
@@ -527,20 +526,20 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                   key={tpl.id}
                   type="button"
                   onClick={() => handleApplyTemplate(tpl.id)}
-                  className="btn-tactile w-full text-left p-3 rounded-xl bg-[#07090E] hover:bg-[#131926] border border-white/[0.07] hover:border-amber-500/40 transition-colors group cursor-pointer"
+                  className="btn-tactile w-full text-left p-3 rounded-xl bg-[#F8FAFC] hover:bg-[#EFF6FF]/60 border border-slate-200 hover:border-blue-300 transition-colors group cursor-pointer"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-semibold text-slate-100 group-hover:text-amber-300 transition-colors">
+                    <span className="text-xs font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
                       {tpl.nombre}
                     </span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 shrink-0" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 shrink-0" />
                   </div>
-                  <p className="mt-1 text-[11px] text-slate-400 leading-snug">{tpl.subtitulo}</p>
-                  <div className="mt-2 flex items-center gap-2 text-[10px] font-mono-tabular">
-                    <span className="px-1.5 py-0.5 rounded bg-[#131926] border border-white/[0.08] text-amber-300">
+                  <p className="mt-1 text-[11px] text-slate-600 leading-snug">{tpl.subtitulo}</p>
+                  <div className="mt-2 flex items-center gap-2 text-[10px] font-mono-tabular font-semibold">
+                    <span className="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-blue-700">
                       {tpl.butacas} butacas
                     </span>
-                    <span className="px-1.5 py-0.5 rounded bg-[#131926] border border-white/[0.08] text-emerald-300">
+                    <span className="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-emerald-700">
                       {tpl.pisos} {tpl.pisos === 2 ? 'Pisos' : 'Piso'}
                     </span>
                   </div>
@@ -550,12 +549,12 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
           </div>
 
           {/* 3. Active Floor Row Controls */}
-          <div className="bg-[#0D111A] border border-white/[0.07] rounded-xl p-4 space-y-3">
+          <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono-tabular uppercase tracking-wider text-slate-300">
+              <span className="text-xs font-mono-tabular uppercase tracking-wider text-slate-700 font-semibold">
                 Ingeniería de Filas · Piso {activeFloorTab}
               </span>
-              <span className="text-xs font-mono-tabular text-amber-400 font-semibold">
+              <span className="text-xs font-mono-tabular text-blue-600 font-bold">
                 {currentFloorData.filas.length} filas
               </span>
             </div>
@@ -564,7 +563,7 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
               <button
                 type="button"
                 onClick={() => handleAddRow(activeFloorTab)}
-                className="btn-tactile inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/35 text-emerald-300 text-xs font-medium cursor-pointer"
+                className="btn-tactile inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg bg-[#DCFCE7] hover:bg-emerald-100 border border-[#A7F3D0] text-[#15803D] text-xs font-semibold cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Agregar Fila</span>
@@ -574,7 +573,7 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                 type="button"
                 onClick={() => handleRemoveLastRow(activeFloorTab)}
                 disabled={currentFloorData.filas.length <= 1}
-                className="btn-tactile inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg bg-orange-500/12 hover:bg-orange-500/20 disabled:opacity-40 border border-orange-500/30 text-orange-300 text-xs font-medium cursor-pointer"
+                className="btn-tactile inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg bg-[#FEF3C7] hover:bg-amber-100 disabled:opacity-40 border border-[#FDE68A] text-[#B45309] text-xs font-semibold cursor-pointer"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Quitar Fila</span>
@@ -584,20 +583,20 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
             <button
               type="button"
               onClick={() => handleAutoRenumberFloor(activeFloorTab)}
-              className="btn-tactile w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg bg-[#07090E] hover:bg-[#131926] border border-white/[0.08] text-slate-200 text-xs font-medium cursor-pointer"
+              className="btn-tactile w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg bg-[#F8FAFC] hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold cursor-pointer"
             >
-              <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
+              <RotateCcw className="w-3.5 h-3.5 text-blue-600" />
               <span>Autonumerar Etiquetas del Piso {activeFloorTab}</span>
             </button>
 
-            <div className="p-3 rounded-lg bg-[#07090E] border border-white/[0.07] space-y-1.5 text-[11px] text-slate-400">
-              <div className="flex items-center gap-1.5 text-slate-200 font-medium">
-                <Info className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <div className="p-3 rounded-lg bg-[#F8FAFC] border border-slate-200 space-y-1.5 text-[11px] text-slate-600">
+              <div className="flex items-center gap-1.5 text-slate-900 font-semibold">
+                <Info className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                 <span>Interacción Táctil en Cabina</span>
               </div>
               <p>• Tocá cualquier celda para alternar entre Butaca Física y Pasillo.</p>
               <p>
-                • Tocá el botón <Edit2 className="w-3 h-3 inline text-amber-400" /> en una butaca
+                • Tocá el botón <Edit2 className="w-3 h-3 inline text-blue-600" /> en una butaca
                 para editar su código (`1A`, `P1B`, `VIP`).
               </p>
             </div>
@@ -605,17 +604,17 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
             <button
               type="button"
               onClick={() => setShowJsonPreview((s) => !s)}
-              className="btn-tactile w-full inline-flex items-center justify-between py-2 px-3 rounded-lg bg-[#07090E] border border-white/[0.08] text-xs font-mono-tabular text-slate-400 hover:text-slate-200 cursor-pointer"
+              className="btn-tactile w-full inline-flex items-center justify-between py-2 px-3 rounded-lg bg-[#F8FAFC] border border-slate-200 text-xs font-mono-tabular text-slate-600 hover:text-slate-900 cursor-pointer"
             >
-              <span className="flex items-center gap-1.5">
-                <Code2 className="w-3.5 h-3.5 text-amber-400" />
+              <span className="flex items-center gap-1.5 font-semibold">
+                <Code2 className="w-3.5 h-3.5 text-blue-600" />
                 <span>Payload API (`/layout`)</span>
               </span>
               <span>{showJsonPreview ? 'Ocultar' : 'Ver JSON'}</span>
             </button>
 
             {showJsonPreview && (
-              <pre className="p-3 rounded-lg bg-[#05070B] border border-white/[0.08] text-[10px] font-mono-tabular text-emerald-300 overflow-x-auto max-h-52">
+              <pre className="p-3 rounded-lg bg-[#F8FAFC] border border-slate-200 text-[10px] font-mono-tabular text-slate-800 overflow-x-auto max-h-52">
                 {JSON.stringify(
                   {
                     pisos: currentPayload.pisos,
@@ -635,26 +634,26 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
           </div>
         </div>
 
-        {/* Right Area: Automotive / Aviation Grade Interactive Coach Blueprint */}
-        <div className="lg:col-span-8 bg-[#0D111A] border border-white/[0.07] rounded-xl p-4 sm:p-5 space-y-5 shadow-2xl">
+        {/* Right Area: Nordic Daylight Technical Coach Blueprint */}
+        <div className="lg:col-span-8 bg-white border border-slate-200 rounded-xl p-4 sm:p-5 space-y-5 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
           {/* Floor Tabs Switcher + Legend */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-white/[0.07]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200">
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setActiveFloorTab(1)}
                 className={`btn-tactile px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 cursor-pointer ${
                   activeFloorTab === 1
-                    ? 'bg-[#F59E0B] text-slate-950 shadow-[0_0_18px_rgba(245,158,11,0.35)]'
-                    : 'bg-[#07090E] text-slate-300 border border-white/[0.08] hover:bg-[#131926]'
+                    ? 'bg-[#2563EB] text-white shadow-sm'
+                    : 'bg-[#F8FAFC] text-slate-700 border border-slate-200 hover:bg-slate-100'
                 }`}
               >
                 <span>Planta Baja (Piso 1)</span>
                 <span
                   className={`px-1.5 py-0.5 rounded font-mono-tabular text-[10px] ${
                     activeFloorTab === 1
-                      ? 'bg-slate-950/20 text-slate-950 font-bold'
-                      : 'bg-slate-800 text-slate-300'
+                      ? 'bg-white/20 text-white font-bold'
+                      : 'bg-white text-slate-600 border border-slate-200'
                   }`}
                 >
                   {floor1Seats} pax
@@ -667,16 +666,16 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                   onClick={() => setActiveFloorTab(2)}
                   className={`btn-tactile px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 cursor-pointer ${
                     activeFloorTab === 2
-                      ? 'bg-[#F59E0B] text-slate-950 shadow-[0_0_18px_rgba(245,158,11,0.35)]'
-                      : 'bg-[#07090E] text-slate-300 border border-white/[0.08] hover:bg-[#131926]'
+                      ? 'bg-[#2563EB] text-white shadow-sm'
+                      : 'bg-[#F8FAFC] text-slate-700 border border-slate-200 hover:bg-slate-100'
                   }`}
                 >
                   <span>Planta Alta (Piso 2)</span>
                   <span
                     className={`px-1.5 py-0.5 rounded font-mono-tabular text-[10px] ${
                       activeFloorTab === 2
-                        ? 'bg-slate-950/20 text-slate-950 font-bold'
-                        : 'bg-slate-800 text-slate-300'
+                        ? 'bg-white/20 text-white font-bold'
+                        : 'bg-white text-slate-600 border border-slate-200'
                     }`}
                   >
                     {floor2Seats} pax
@@ -685,61 +684,60 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
               )}
             </div>
 
-            <div className="flex items-center gap-4 text-xs text-slate-400">
+            <div className="flex items-center gap-4 text-xs text-slate-600">
               <span className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded bg-emerald-500/25 border border-emerald-400/70 inline-block" />
+                <span className="w-3 h-3 rounded bg-[#EFF6FF] border border-[#3B82F6] inline-block" />
                 <span>Piso 1 Activa</span>
               </span>
               {pisosCount === 2 && (
                 <span className="flex items-center gap-1.5">
-                  <span className="w-3 h-3 rounded bg-sky-500/25 border border-sky-400/70 inline-block" />
+                  <span className="w-3 h-3 rounded bg-[#ECFEFF] border border-[#0891B2] inline-block" />
                   <span>Piso 2 Activa</span>
                 </span>
               )}
               <span className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded border border-dashed border-slate-700 bg-[#07090E] inline-block" />
+                <span className="w-3 h-3 rounded border border-dashed border-slate-300 bg-slate-50 inline-block" />
                 <span>Pasillo</span>
               </span>
             </div>
           </div>
 
-          {/* CAD Blueprint Canvas */}
-          <div className="bg-blueprint-grid rounded-2xl p-4 sm:p-8 border border-white/[0.08] flex flex-col items-center overflow-x-auto relative">
+          {/* CAD Blueprint Canvas in Technical Light Mode (#F1F5F9 + subtle cobalt grid) */}
+          <div className="bg-blueprint-grid rounded-2xl p-4 sm:p-8 border border-slate-200 flex flex-col items-center overflow-x-auto relative">
             {/* Side Wing Mirrors + Fuselage Container */}
             <div className="relative w-full max-w-[470px]">
               {/* Left & Right Aerodynamic Side Mirrors */}
               <div
-                className="hidden sm:block absolute -left-4 top-12 w-3.5 h-10 rounded-l-full bg-[#131926] border border-slate-600/80 shadow-md"
+                className="hidden sm:block absolute -left-4 top-12 w-3.5 h-10 rounded-l-full bg-white border border-slate-300 shadow-xs"
                 aria-hidden="true"
               />
               <div
-                className="hidden sm:block absolute -right-4 top-12 w-3.5 h-10 rounded-r-full bg-[#131926] border border-slate-600/80 shadow-md"
+                className="hidden sm:block absolute -right-4 top-12 w-3.5 h-10 rounded-r-full bg-white border border-slate-300 shadow-xs"
                 aria-hidden="true"
               />
 
-              {/* Bus Fuselage Top-Down Silhouette */}
-              <div className="w-full bg-[#090D15]/95 border-2 border-slate-700/90 rounded-t-[54px] rounded-b-[26px] shadow-[0_25px_70px_rgba(0,0,0,0.85)] overflow-hidden">
-                {/* Aerodynamic Front Nose + Amber Headlight Beams + Cockpit */}
-                <div className="relative bg-gradient-to-b from-[#162033] via-[#0D1320] to-[#090D15] border-b border-white/[0.08] px-5 pt-4 pb-4">
-                  {/* Front Amber Reflector Headlights */}
+              {/* Bus Fuselage Top-Down Silhouette in Pure White (#FFFFFF) */}
+              <div className="w-full bg-white border-2 border-slate-300 rounded-t-[54px] rounded-b-[26px] shadow-[0_20px_50px_rgba(15,23,42,0.08)] overflow-hidden">
+                {/* Aerodynamic Front Nose + Windshield + Cockpit */}
+                <div className="relative bg-gradient-to-b from-sky-100/90 via-sky-50/40 to-white border-b border-slate-200 px-5 pt-4 pb-4">
+                  {/* Front Headlights */}
                   <div className="flex items-center justify-between px-6 mb-2.5">
-                    <span className="w-10 h-1.5 rounded-full bg-amber-400 shadow-[0_0_14px_#F59E0B]" />
-                    <span className="text-[9px] font-mono-tabular uppercase tracking-[0.25em] text-slate-400">
+                    <span className="w-10 h-1.5 rounded-full bg-amber-400 border border-amber-500/40 shadow-[0_0_8px_rgba(245,158,11,0.45)]" />
+                    <span className="text-[9px] font-mono-tabular font-semibold uppercase tracking-[0.25em] text-slate-500">
                       FRENTE AERODINÁMICO
                     </span>
-                    <span className="w-10 h-1.5 rounded-full bg-amber-400 shadow-[0_0_14px_#F59E0B]" />
+                    <span className="w-10 h-1.5 rounded-full bg-amber-400 border border-amber-500/40 shadow-[0_0_8px_rgba(245,158,11,0.45)]" />
                   </div>
 
-                  {/* Curved Panoramic Windshield SVG */}
-                  <div className="mx-auto w-11/12 h-3 rounded-t-full bg-sky-400/15 border-t-2 border-x border-sky-400/40 mb-4" />
+                  {/* Curved Panoramic Windshield */}
+                  <div className="mx-auto w-11/12 h-3 rounded-t-full bg-sky-200/50 border-t-2 border-x border-sky-300 mb-4" />
 
                   <div className="grid grid-cols-2 gap-3">
-                    {/* Left Side: Driver Cockpit with Schematic Steering Wheel (Piso 1) or Front Panorama (Piso 2) */}
-                    <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#07090E]/90 border border-white/[0.08]">
-                      {/* Schematic Steering Wheel SVG */}
+                    {/* Left Side: Driver Cockpit with Schematic Steering Wheel */}
+                    <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200">
                       <svg
                         viewBox="0 0 24 24"
-                        className="w-6 h-6 text-amber-400 shrink-0"
+                        className="w-6 h-6 text-blue-600 shrink-0"
                         fill="none"
                         stroke="currentColor"
                         strokeWidth="1.8"
@@ -749,21 +747,21 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                         <path d="M12 14.5V21M4.5 9.5L9.8 11M19.5 9.5L14.2 11" />
                       </svg>
                       <div className="min-w-0">
-                        <div className="text-[9px] font-mono-tabular uppercase tracking-wider text-amber-400">
+                        <div className="text-[9px] font-mono-tabular font-semibold uppercase tracking-wider text-blue-600">
                           {activeFloorTab === 1 ? 'PUESTO DE MANDO' : 'VISTA PANORÁMICA'}
                         </div>
-                        <div className="text-xs font-semibold text-slate-100 truncate">
+                        <div className="text-xs font-bold text-slate-900 truncate">
                           {activeFloorTab === 1 ? 'Cabina Conductor' : 'Frente Planta Alta'}
                         </div>
                       </div>
                     </div>
 
                     {/* Right Side: Stairwell / Access Door */}
-                    <div className="px-3 py-2 rounded-xl bg-[#07090E]/90 border border-dashed border-amber-500/40 flex flex-col justify-center text-right">
-                      <div className="text-[9px] font-mono-tabular uppercase tracking-wider text-amber-400">
+                    <div className="px-3 py-2 rounded-xl bg-slate-50 border border-dashed border-slate-300 flex flex-col justify-center text-right">
+                      <div className="text-[9px] font-mono-tabular font-semibold uppercase tracking-wider text-slate-500">
                         {activeFloorTab === 1 ? 'ACCESO & ESCALERA' : 'ESCALERA INTERNA'}
                       </div>
-                      <div className="text-xs font-medium text-slate-300 truncate">
+                      <div className="text-xs font-semibold text-slate-700 truncate">
                         {activeFloorTab === 1 ? 'Ascenso Pasajeros' : 'Bajada a Piso 1'}
                       </div>
                     </div>
@@ -771,17 +769,17 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                 </div>
 
                 {/* Column Coordinate Header */}
-                <div className="px-4 sm:px-5 py-2.5 bg-[#07090E] border-b border-white/[0.07] grid grid-cols-11 gap-2 items-center text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400">
+                <div className="px-4 sm:px-5 py-2.5 bg-[#F8FAFC] border-b border-slate-200 grid grid-cols-11 gap-2 items-center text-[10px] font-mono-tabular font-semibold uppercase tracking-wider text-slate-500">
                   <div className="col-span-1 text-center">FILA</div>
-                  <div className="col-span-2 text-center text-amber-400">VENT. A</div>
+                  <div className="col-span-2 text-center text-blue-600">VENT. A</div>
                   <div className="col-span-2 text-center">PAS. B</div>
-                  <div className="col-span-2 text-center text-slate-500">PASILLO</div>
+                  <div className="col-span-2 text-center text-slate-400">PASILLO</div>
                   <div className="col-span-2 text-center">PAS. C</div>
-                  <div className="col-span-2 text-center text-amber-400">VENT. D</div>
+                  <div className="col-span-2 text-center text-blue-600">VENT. D</div>
                 </div>
 
                 {/* Seat Matrix Rows */}
-                <div className="p-4 sm:p-5 space-y-2.5">
+                <div className="p-4 sm:p-5 space-y-2.5 bg-white">
                   {currentFloorData.filas.map((filaObj, filaIndex) => {
                     const slots = ensureFourSlots(
                       filaObj.asientos,
@@ -801,7 +799,7 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                         return (
                           <div
                             key={colIndex}
-                            className="col-span-2 h-13 rounded-xl bg-[#07090E] border-2 border-amber-400 flex items-center justify-center p-1"
+                            className="col-span-2 h-13 rounded-xl bg-white border-2 border-blue-600 flex items-center justify-center p-1 shadow-xs"
                           >
                             <input
                               type="text"
@@ -815,7 +813,7 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                                 if (e.key === 'Escape') setEditingCell(null);
                               }}
                               aria-label="Editar etiqueta de butaca"
-                              className="w-full text-center font-mono-tabular font-bold text-xs text-amber-300 bg-transparent focus:outline-none uppercase"
+                              className="w-full text-center font-mono-tabular font-bold text-xs text-blue-900 bg-transparent focus:outline-none uppercase"
                             />
                           </div>
                         );
@@ -823,10 +821,12 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
 
                       const isUpperDeck = activeFloorTab === 2;
                       const activeSeatClasses = isUpperDeck
-                        ? 'bg-sky-500/15 hover:bg-sky-500/25 border-sky-400/50 text-sky-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]'
-                        : 'bg-emerald-500/15 hover:bg-emerald-500/25 border-emerald-400/50 text-emerald-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]';
+                        ? 'bg-[#ECFEFF] hover:bg-cyan-100/80 border-[#0891B2] text-[#164E63] shadow-2xs'
+                        : 'bg-[#EFF6FF] hover:bg-blue-100/80 border-[#3B82F6] text-[#1E3A8A] shadow-2xs';
 
-                      const headrestClass = isUpperDeck ? 'bg-sky-400/80' : 'bg-emerald-400/80';
+                      const headrestClass = isUpperDeck ? 'bg-[#0891B2]' : 'bg-[#2563EB]';
+                      const armrestClass = isUpperDeck ? 'bg-cyan-600/25' : 'bg-blue-600/25';
+                      const labelColorClass = isUpperDeck ? 'text-cyan-900' : 'text-blue-900';
 
                       return (
                         <div key={colIndex} className="col-span-2 relative group">
@@ -843,7 +843,7 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                             className={`seat-cell w-full h-13 rounded-xl border flex flex-col items-center justify-center relative cursor-pointer select-none ${
                               isAssigned
                                 ? activeSeatClasses
-                                : 'bg-[#07090E]/70 hover:bg-white/[0.04] border-dashed border-slate-700/80 text-slate-600'
+                                : 'bg-slate-50/60 hover:bg-slate-100 border-dashed border-slate-300 text-slate-400'
                             }`}
                           >
                             {/* Physical Seat Anatomy: Top Headrest Pillow + Side Armrests */}
@@ -852,17 +852,23 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                                 <span
                                   className={`w-8 h-1.5 rounded-b-md absolute top-0 ${headrestClass}`}
                                 />
-                                <span className="w-1 h-6 rounded-r bg-white/15 absolute left-0 top-1/2 -translate-y-1/2" />
-                                <span className="w-1 h-6 rounded-l bg-white/15 absolute right-0 top-1/2 -translate-y-1/2" />
+                                <span
+                                  className={`w-1 h-6 rounded-r absolute left-0 top-1/2 -translate-y-1/2 ${armrestClass}`}
+                                />
+                                <span
+                                  className={`w-1 h-6 rounded-l absolute right-0 top-1/2 -translate-y-1/2 ${armrestClass}`}
+                                />
                               </>
                             )}
 
                             {isAssigned ? (
                               <>
-                                <span className="text-[9px] font-mono-tabular uppercase tracking-wider opacity-70 mt-1">
+                                <span className="text-[9px] font-mono-tabular uppercase tracking-wider opacity-75 mt-1">
                                   {colIndex === 0 || colIndex === 3 ? 'VENT' : 'PAS'}
                                 </span>
-                                <span className="font-mono-tabular font-bold text-xs sm:text-sm tracking-tight text-white">
+                                <span
+                                  className={`font-mono-tabular font-bold text-xs sm:text-sm tracking-tight ${labelColorClass}`}
+                                >
                                   {seatCode}
                                 </span>
                               </>
@@ -887,7 +893,7 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                               }
                               title={`Editar código de butaca ${seatCode}`}
                               aria-label={`Editar código de butaca ${seatCode}`}
-                              className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-[#07090E] border border-amber-400/70 text-amber-300 flex items-center justify-center shadow cursor-pointer z-10"
+                              className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-white border border-blue-500 text-blue-600 flex items-center justify-center shadow-xs cursor-pointer z-10"
                             >
                               <Edit2 className="w-2.5 h-2.5" />
                             </button>
@@ -903,7 +909,7 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                       >
                         {/* Lateral Fuselage Row Coordinate */}
                         <div className="col-span-1 flex items-center justify-center">
-                          <span className="w-6 h-6 rounded-md bg-[#07090E] border border-white/[0.08] font-mono-tabular text-[11px] font-bold text-slate-400 flex items-center justify-center">
+                          <span className="w-6 h-6 rounded-md bg-[#F8FAFC] border border-slate-200 font-mono-tabular text-[11px] font-bold text-slate-600 flex items-center justify-center">
                             {filaObj.fila}
                           </span>
                         </div>
@@ -911,9 +917,9 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                         {renderSeatSlot(0)}
                         {renderSeatSlot(1)}
 
-                        {/* Central Walk Aisle with Longitudinal Guide Line */}
-                        <div className="col-span-2 h-13 rounded-lg bg-[#07090E]/50 border-x border-dashed border-white/[0.07] flex flex-col items-center justify-center select-none relative">
-                          <span className="text-[8px] font-mono-tabular uppercase tracking-widest text-slate-600">
+                        {/* Central Walk Aisle */}
+                        <div className="col-span-2 h-13 rounded-lg bg-slate-50/70 border-x border-dashed border-slate-200 flex flex-col items-center justify-center select-none relative">
+                          <span className="text-[8px] font-mono-tabular uppercase tracking-widest text-slate-400">
                             PASILLO
                           </span>
                         </div>
@@ -926,9 +932,9 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
                 </div>
 
                 {/* Bus Rear Chassis Tail (WC / Minibar / Motor Telemetry) */}
-                <div className="px-5 py-3.5 bg-[#07090E] border-t border-white/[0.08] flex items-center justify-between text-[10px] font-mono-tabular text-slate-400">
+                <div className="px-5 py-3.5 bg-[#F8FAFC] border-t border-slate-200 flex items-center justify-between text-[10px] font-mono-tabular text-slate-500">
                   <span>COLA DE FUSELAJE · WC / BAR A BORDO</span>
-                  <span className="text-amber-400 font-bold">
+                  <span className="text-blue-700 font-bold">
                     NIVEL {activeFloorTab}: {activeFloorTab === 1 ? floor1Seats : floor2Seats} PLAZAS
                   </span>
                 </div>
@@ -937,12 +943,12 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
           </div>
 
           {/* Ergonomic Bottom Floating Engineering Toolbar inside Canvas */}
-          <div className="p-3 rounded-xl bg-[#07090E] border border-white/[0.09] flex flex-wrap items-center justify-between gap-2">
+          <div className="p-3 rounded-xl bg-[#F8FAFC] border border-slate-200 flex flex-wrap items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={() => handleAddRow(activeFloorTab)}
-                className="btn-tactile px-3 py-2 rounded-lg bg-[#131926] hover:bg-slate-800 border border-white/[0.09] text-xs font-medium text-emerald-300 flex items-center gap-1.5 cursor-pointer"
+                className="btn-tactile px-3 py-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-xs font-semibold text-[#15803D] flex items-center gap-1.5 cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>+ Fila Piso {activeFloorTab}</span>
@@ -951,9 +957,9 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
               <button
                 type="button"
                 onClick={() => handleAutoRenumberFloor(activeFloorTab)}
-                className="btn-tactile px-3 py-2 rounded-lg bg-[#131926] hover:bg-slate-800 border border-white/[0.09] text-xs font-medium text-slate-200 flex items-center gap-1.5 cursor-pointer"
+                className="btn-tactile px-3 py-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-700 flex items-center gap-1.5 cursor-pointer"
               >
-                <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
+                <RotateCcw className="w-3.5 h-3.5 text-blue-600" />
                 <span>Renumerar Piso {activeFloorTab}</span>
               </button>
             </div>
@@ -962,7 +968,7 @@ export const LayoutEditorView: React.FC<LayoutEditorViewProps> = ({
               type="button"
               onClick={handleSaveDistribution}
               disabled={saving || !activeVehiculo}
-              className="btn-tactile px-4 py-2 rounded-lg bg-[#F59E0B] hover:bg-amber-400 text-slate-950 font-semibold text-xs flex items-center gap-1.5 cursor-pointer"
+              className="btn-tactile px-4 py-2 rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white font-semibold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer"
             >
               <Save className="w-3.5 h-3.5" />
               <span>Guardar Plano ({totalSeatsAssigned} butacas)</span>

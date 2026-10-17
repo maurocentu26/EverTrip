@@ -230,7 +230,6 @@ export const FleetView: React.FC<FleetViewProps> = ({
       ? countActiveSeatsInLayout(v.layout_data)
       : v.capacidad_asientos;
 
-    // Preview floor 1 mini matrix
     const previewFloor1 =
       v.layout_data?.layout.find((p) => p.piso === 1) ||
       buildStandardFloor(1, pisosCount === 1 ? 6 : 3, '');
@@ -238,13 +237,13 @@ export const FleetView: React.FC<FleetViewProps> = ({
     return (
       <div className="space-y-5">
         {/* Header */}
-        <div className="flex items-start justify-between gap-3 pb-3.5 border-b border-white/[0.07]">
+        <div className="flex items-start justify-between gap-3 pb-3.5 border-b border-slate-200">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono-tabular uppercase tracking-widest px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              <span className="text-[10px] font-mono-tabular uppercase tracking-widest px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold">
                 INSPECTOR TÉCNICO
               </span>
-              <span className="text-xs font-mono-tabular font-semibold text-amber-400">
+              <span className="text-xs font-mono-tabular font-bold text-slate-700">
                 {v.interno || 'INT-S/N'}
               </span>
             </div>
@@ -254,7 +253,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
           <button
             type="button"
             onClick={() => setMobileInspectorOpen(false)}
-            className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white bg-white/[0.05]"
+            className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:text-slate-900 bg-slate-100"
             aria-label="Cerrar inspector"
           >
             <X className="w-4 h-4" />
@@ -262,69 +261,69 @@ export const FleetView: React.FC<FleetViewProps> = ({
         </div>
 
         {/* Technical Specs Summary */}
-        <div className="p-3.5 rounded-xl bg-[#07090E] border border-white/[0.07] space-y-2.5 text-xs">
+        <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-slate-200 space-y-2.5 text-xs">
           <div className="flex items-center justify-between">
             <span className="text-slate-500 font-mono-tabular uppercase text-[10px]">
               CARROCERÍA / CHASIS
             </span>
-            <span className="text-slate-100 font-semibold text-right">
+            <span className="text-slate-900 font-semibold text-right">
               {v.marca_modelo || 'Marcopolo Paradiso DD'}
             </span>
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-white/[0.05]">
+          <div className="flex items-center justify-between pt-2 border-t border-slate-200/80">
             <span className="text-slate-500 font-mono-tabular uppercase text-[10px]">
               CLASE DE SERVICIO
             </span>
             <span
-              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium border ${serviceBadge.badgeClass}`}
+              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold border ${serviceBadge.badgeClass}`}
             >
               <span className={`w-1.5 h-1.5 rounded-full ${serviceBadge.dotClass}`} />
               {serviceBadge.label}
             </span>
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-white/[0.05]">
+          <div className="flex items-center justify-between pt-2 border-t border-slate-200/80">
             <span className="text-slate-500 font-mono-tabular uppercase text-[10px]">
               ESTADO DE TRÁFICO
             </span>
             <span
-              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium border ${estadoBadge.badgeClass}`}
+              className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold border ${estadoBadge.badgeClass}`}
             >
               <span className={`w-1.5 h-1.5 rounded-full ${estadoBadge.dotClass}`} />
               {estadoBadge.label}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/[0.05] font-mono-tabular">
+          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/80 font-mono-tabular">
             <div>
               <span className="text-[10px] text-slate-500 block">ARQUITECTURA</span>
-              <span className="text-slate-200 font-semibold">
+              <span className="text-slate-800 font-semibold">
                 {pisosCount === 2 ? 'Doble Piso (2P)' : 'Piso Simple (1P)'}
               </span>
             </div>
             <div className="text-right">
               <span className="text-[10px] text-slate-500 block">PLAZAS ACTIVAS</span>
-              <span className="text-amber-400 font-bold">{configuredSeats} butacas</span>
+              <span className="text-blue-700 font-bold">{configuredSeats} butacas</span>
             </div>
           </div>
         </div>
 
         {/* Live Miniature Seat Blueprint Preview */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400">
-            <span className="flex items-center gap-1.5 text-sky-400">
+          <div className="flex items-center justify-between text-[10px] font-mono-tabular uppercase tracking-wider text-slate-500">
+            <span className="flex items-center gap-1.5 text-blue-700 font-semibold">
               <Cpu className="w-3.5 h-3.5" /> Previsualización de Cabina (Piso 1)
             </span>
             <span>{v.layout_configurado ? 'Plano Homologado' : 'Vista Estándar'}</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-blueprint-grid border border-sky-500/20">
-            <div className="mx-auto max-w-[240px] bg-[#0B101B]/95 border border-slate-700/80 rounded-t-2xl rounded-b-xl p-3 space-y-1.5">
+          <div className="p-3.5 rounded-xl bg-blueprint-grid border border-slate-200">
+            <div className="mx-auto max-w-[240px] bg-white border border-slate-300 rounded-t-2xl rounded-b-xl p-3 space-y-1.5 shadow-sm">
               {/* Mini Nose */}
-              <div className="flex items-center justify-between pb-1.5 mb-1 border-b border-white/[0.07] text-[9px] font-mono-tabular text-slate-500">
+              <div className="flex items-center justify-between pb-1.5 mb-1 border-b border-slate-200 text-[9px] font-mono-tabular text-slate-500">
                 <span>VOLANTE</span>
-                <span className="text-amber-400">FRENTE</span>
+                <span className="text-blue-600 font-bold">FRENTE</span>
                 <span>ACCESO</span>
               </div>
 
@@ -337,15 +336,15 @@ export const FleetView: React.FC<FleetViewProps> = ({
                         key={cIdx}
                         className={`h-5 rounded text-[9px] font-mono-tabular font-bold flex items-center justify-center ${
                           code
-                            ? 'bg-emerald-500/20 border border-emerald-500/50 text-emerald-300'
-                            : 'border border-dashed border-slate-800 text-slate-700'
+                            ? 'bg-[#EFF6FF] border border-[#3B82F6] text-blue-900'
+                            : 'border border-dashed border-slate-300 text-slate-400'
                         }`}
                       >
                         {code || '·'}
                       </div>
                     );
                   })}
-                  <div className="text-center text-[8px] font-mono-tabular text-slate-600">
+                  <div className="text-center text-[8px] font-mono-tabular text-slate-500">
                     F{f.fila}
                   </div>
                   {[2, 3].map((cIdx) => {
@@ -355,8 +354,8 @@ export const FleetView: React.FC<FleetViewProps> = ({
                         key={cIdx}
                         className={`h-5 rounded text-[9px] font-mono-tabular font-bold flex items-center justify-center ${
                           code
-                            ? 'bg-emerald-500/20 border border-emerald-500/50 text-emerald-300'
-                            : 'border border-dashed border-slate-800 text-slate-700'
+                            ? 'bg-[#EFF6FF] border border-[#3B82F6] text-blue-900'
+                            : 'border border-dashed border-slate-300 text-slate-400'
                         }`}
                       >
                         {code || '·'}
@@ -374,7 +373,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
           <button
             type="button"
             onClick={() => onOpenLayoutEditor(v.id)}
-            className="btn-tactile w-full py-2.5 px-4 rounded-xl bg-[#F59E0B] hover:bg-amber-400 text-slate-950 font-semibold text-xs flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(245,158,11,0.28)] cursor-pointer"
+            className="btn-tactile w-full py-2.5 px-4 rounded-xl bg-[#2563EB] hover:bg-blue-700 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-sm cursor-pointer"
           >
             <Grid className="w-4 h-4 stroke-[2.2]" />
             <span>Abrir en Ingeniero de Chasis (Blueprint)</span>
@@ -383,9 +382,9 @@ export const FleetView: React.FC<FleetViewProps> = ({
           <button
             type="button"
             onClick={(e) => openEditModal(v, e)}
-            className="btn-tactile w-full py-2 px-4 rounded-xl bg-[#07090E] hover:bg-slate-800 border border-white/[0.1] text-slate-200 font-medium text-xs flex items-center justify-center gap-2 cursor-pointer"
+            className="btn-tactile w-full py-2 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-semibold text-xs flex items-center justify-center gap-2 cursor-pointer"
           >
-            <Edit3 className="w-3.5 h-3.5 text-slate-400" />
+            <Edit3 className="w-3.5 h-3.5 text-slate-500" />
             <span>Editar Ficha Técnica y Estado</span>
           </button>
         </div>
@@ -396,16 +395,16 @@ export const FleetView: React.FC<FleetViewProps> = ({
   return (
     <div className="space-y-5 pb-20 lg:pb-6">
       {/* Header Banner */}
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between bg-[#0D111A] border border-white/[0.07] rounded-xl p-5">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between bg-white border border-slate-200 rounded-xl p-5 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
         <div className="space-y-1">
-          <div className="flex items-center gap-2 text-[11px] font-mono-tabular uppercase tracking-widest text-emerald-400">
+          <div className="flex items-center gap-2 text-[11px] font-mono-tabular uppercase tracking-widest text-blue-600 font-semibold">
             <Bus className="w-3.5 h-3.5" />
             <span>MÓDULO 02 · PARQUE MÓVIL MERCOSUR · EVE-9</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-100 font-display">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
             Padrón de Flota e Inspector Técnico de Unidades
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 max-w-2xl">
+          <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
             Controlá el estado operativo de cada unidad, chapas patente Mercosur y distribución de butacas por nivel.
           </p>
         </div>
@@ -415,16 +414,16 @@ export const FleetView: React.FC<FleetViewProps> = ({
             type="button"
             onClick={() => onRefresh()}
             disabled={loading}
-            className="btn-tactile inline-flex items-center gap-2 px-3.5 py-2.5 rounded-lg border border-white/[0.08] bg-[#07090E] hover:bg-[#131926] text-slate-300 text-xs font-medium cursor-pointer"
+            className="btn-tactile inline-flex items-center gap-2 px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-emerald-400' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-blue-600' : ''}`} />
             <span>Actualizar</span>
           </button>
 
           <button
             type="button"
             onClick={openCreateModal}
-            className="btn-tactile inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#F59E0B] hover:bg-amber-400 text-slate-950 font-semibold text-xs sm:text-sm shadow-[0_0_24px_rgba(245,158,11,0.28)] cursor-pointer"
+            className="btn-tactile inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm shadow-sm cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Registrar Unidad</span>
@@ -433,33 +432,33 @@ export const FleetView: React.FC<FleetViewProps> = ({
       </div>
 
       {/* 1px Border KPI Strip */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 bg-[#0D111A] border border-white/[0.07] rounded-xl overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-white/[0.07]">
+      <div className="grid grid-cols-1 sm:grid-cols-3 bg-white border border-slate-200 rounded-xl overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-slate-200 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
         <div className="p-4">
-          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400">
+          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500">
             <span>Unidades Operativas</span>
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <ShieldCheck className="w-4 h-4 text-emerald-600" />
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono-tabular text-slate-100">
+            <span className="text-2xl font-bold font-mono-tabular text-slate-900">
               {kpis.operativos}
             </span>
             <span className="text-xs font-mono-tabular text-slate-500">
               / {kpis.totalFlota} en padrón
             </span>
           </div>
-          <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-emerald-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-[#15803D] font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
             <span>Habilitadas para despacho inmediato</span>
           </div>
         </div>
 
         <div className="p-4">
-          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400">
+          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500">
             <span>En Taller / Mantenimiento</span>
-            <Wrench className="w-4 h-4 text-orange-400" />
+            <Wrench className="w-4 h-4 text-amber-600" />
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono-tabular text-orange-400">
+            <span className="text-2xl font-bold font-mono-tabular text-[#B45309]">
               {kpis.enTaller}
             </span>
             <span className="text-xs font-mono-tabular text-slate-500">unidades en box</span>
@@ -470,12 +469,12 @@ export const FleetView: React.FC<FleetViewProps> = ({
         </div>
 
         <div className="p-4">
-          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400">
+          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500">
             <span>Plazas Totales Disponibles</span>
-            <Users className="w-4 h-4 text-amber-400" />
+            <Users className="w-4 h-4 text-blue-600" />
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono-tabular text-amber-400">
+            <span className="text-2xl font-bold font-mono-tabular text-blue-600">
               {kpis.plazasTotalesDisponibles}
             </span>
             <span className="text-xs font-mono-tabular text-slate-500">butacas activas</span>
@@ -487,23 +486,23 @@ export const FleetView: React.FC<FleetViewProps> = ({
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-[#0D111A] border border-white/[0.07] rounded-xl p-3.5 space-y-3">
+      <div className="bg-white border border-slate-200 rounded-xl p-3.5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar por patente (AG 482 KM), interno o chasis..."
               aria-label="Buscar vehículo"
-              className="w-full pl-9 pr-8 py-2 bg-[#07090E] border border-white/[0.08] rounded-lg text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-500/70"
+              className="w-full pl-9 pr-8 py-2 bg-[#F8FAFC] border border-slate-200 rounded-lg text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 p-1"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -511,8 +510,8 @@ export const FleetView: React.FC<FleetViewProps> = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400 mr-1 flex items-center gap-1">
-              <SlidersHorizontal className="w-3 h-3 text-amber-400" /> Servicio:
+            <span className="text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500 mr-1 flex items-center gap-1">
+              <SlidersHorizontal className="w-3 h-3 text-blue-600" /> Servicio:
             </span>
             {[
               { id: 'ALL', label: 'Todos' },
@@ -524,10 +523,10 @@ export const FleetView: React.FC<FleetViewProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => setServiceFilter(item.id)}
-                className={`btn-tactile px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer ${
+                className={`btn-tactile px-2.5 py-1 rounded-md text-xs font-semibold cursor-pointer ${
                   serviceFilter === item.id
-                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                    : 'bg-[#07090E] text-slate-400 border border-white/[0.07] hover:text-slate-200'
+                    ? 'bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE]'
+                    : 'bg-[#F8FAFC] text-slate-600 border border-slate-200 hover:text-slate-900'
                 }`}
               >
                 {item.label}
@@ -536,9 +535,9 @@ export const FleetView: React.FC<FleetViewProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/[0.06]">
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200/80">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400 mr-1">
+            <span className="text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500 mr-1">
               Semáforo de Estado:
             </span>
             {(
@@ -553,10 +552,10 @@ export const FleetView: React.FC<FleetViewProps> = ({
                 key={st.id}
                 type="button"
                 onClick={() => setStatusFilter(st.id)}
-                className={`btn-tactile px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer ${
+                className={`btn-tactile px-2.5 py-1 rounded-md text-xs font-semibold cursor-pointer ${
                   statusFilter === st.id
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                    : 'bg-[#07090E] text-slate-400 border border-white/[0.07] hover:text-slate-200'
+                    ? 'bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE]'
+                    : 'bg-[#F8FAFC] text-slate-600 border border-slate-200 hover:text-slate-900'
                 }`}
               >
                 {st.label}
@@ -564,8 +563,8 @@ export const FleetView: React.FC<FleetViewProps> = ({
             ))}
           </div>
 
-          <span className="text-xs font-mono-tabular text-slate-400">
-            Unidades visibles: <strong className="text-slate-100">{filteredVehiculos.length}</strong>
+          <span className="text-xs font-mono-tabular text-slate-500">
+            Unidades visibles: <strong className="text-slate-900">{filteredVehiculos.length}</strong>
           </span>
         </div>
       </div>
@@ -574,9 +573,9 @@ export const FleetView: React.FC<FleetViewProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         <div className="lg:col-span-7 xl:col-span-8">
           {filteredVehiculos.length === 0 ? (
-            <div className="bg-[#0D111A] border border-white/[0.07] rounded-xl p-12 text-center space-y-2">
-              <Bus className="w-8 h-8 text-slate-500 mx-auto" />
-              <p className="text-slate-200 font-medium text-sm">
+            <div className="bg-white border border-slate-200 rounded-xl p-12 text-center space-y-2">
+              <Bus className="w-8 h-8 text-slate-400 mx-auto" />
+              <p className="text-slate-800 font-semibold text-sm">
                 No se encontraron unidades con los filtros seleccionados
               </p>
               <p className="text-xs text-slate-500">
@@ -600,8 +599,8 @@ export const FleetView: React.FC<FleetViewProps> = ({
                     onClick={() => handleSelectVehiculo(vehiculo)}
                     className={`rounded-xl p-4 flex flex-col justify-between gap-4 transition-all cursor-pointer border ${
                       isSelected
-                        ? 'bg-[#131926] border-amber-500/50 shadow-[0_8px_30px_rgba(0,0,0,0.6)]'
-                        : 'bg-[#0D111A] border-white/[0.07] hover:border-white/[0.15]'
+                        ? 'bg-[#EFF6FF]/60 border-blue-500 ring-2 ring-blue-500/15 shadow-md'
+                        : 'bg-white border-slate-200 hover:border-slate-300 shadow-[0_1px_3px_rgba(15,23,42,0.04)]'
                     }`}
                   >
                     <div className="space-y-3">
@@ -610,12 +609,12 @@ export const FleetView: React.FC<FleetViewProps> = ({
 
                         <div className="flex flex-col items-end gap-1">
                           <span
-                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium border ${estadoBadge.badgeClass}`}
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${estadoBadge.badgeClass}`}
                           >
                             <span className={`w-1.5 h-1.5 rounded-full ${estadoBadge.dotClass}`} />
                             {estadoBadge.label}
                           </span>
-                          <span className="text-xs font-mono-tabular font-bold text-amber-400">
+                          <span className="text-xs font-mono-tabular font-bold text-slate-600">
                             {vehiculo.interno || 'INT-S/N'}
                           </span>
                         </div>
@@ -623,26 +622,26 @@ export const FleetView: React.FC<FleetViewProps> = ({
 
                       <div>
                         <div className="flex items-center justify-between gap-2">
-                          <span className="text-sm font-semibold text-slate-100 truncate">
+                          <span className="text-sm font-bold text-slate-900 truncate">
                             {vehiculo.marca_modelo || 'Unidad Larga Distancia'}
                           </span>
                           <ChevronRight
                             className={`w-4 h-4 shrink-0 ${
-                              isSelected ? 'text-amber-400' : 'text-slate-600'
+                              isSelected ? 'text-blue-600' : 'text-slate-400'
                             }`}
                           />
                         </div>
 
                         <div className="mt-2 flex flex-wrap items-center gap-1.5">
                           <span
-                            className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium border ${serviceBadge.badgeClass}`}
+                            className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold border ${serviceBadge.badgeClass}`}
                           >
                             <span className={`w-1.5 h-1.5 rounded-full ${serviceBadge.dotClass}`} />
                             {serviceBadge.label}
                           </span>
 
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono-tabular bg-[#07090E] text-slate-300 border border-white/[0.07]">
-                            <Layers className="w-3 h-3 text-amber-400" />
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono-tabular font-medium bg-[#F8FAFC] text-slate-700 border border-slate-200">
+                            <Layers className="w-3 h-3 text-blue-600" />
                             {pisosCount === 2 ? '2 Pisos (DD)' : '1 Piso'}
                           </span>
                         </div>
@@ -650,25 +649,25 @@ export const FleetView: React.FC<FleetViewProps> = ({
                     </div>
 
                     {/* Seat Capacity Visual Bar */}
-                    <div className="p-2.5 rounded-lg bg-[#07090E] border border-white/[0.06] space-y-1.5">
+                    <div className="p-2.5 rounded-lg bg-[#F8FAFC] border border-slate-200 space-y-1.5">
                       <div className="flex items-center justify-between text-[11px] font-mono-tabular">
-                        <span className="text-slate-400">
-                          Capacidad: <strong className="text-slate-100">{configuredSeats} pax</strong>
+                        <span className="text-slate-600">
+                          Capacidad: <strong className="text-slate-900">{configuredSeats} pax</strong>
                         </span>
                         {vehiculo.layout_configurado ? (
-                          <span className="inline-flex items-center gap-1 text-emerald-400">
+                          <span className="inline-flex items-center gap-1 text-[#15803D] font-semibold">
                             <CheckCircle2 className="w-3 h-3" /> Plano OK
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-amber-400">
+                          <span className="inline-flex items-center gap-1 text-[#B45309] font-semibold">
                             <Clock className="w-3 h-3" /> Sin plano
                           </span>
                         )}
                       </div>
-                      <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                      <div className="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
                         <div
                           className={`h-full rounded-full ${
-                            vehiculo.layout_configurado ? 'bg-emerald-500' : 'bg-amber-500/60'
+                            vehiculo.layout_configurado ? 'bg-[#10B981]' : 'bg-amber-500'
                           }`}
                           style={{
                             width: `${Math.min(100, Math.round((configuredSeats / 50) * 100))}%`,
@@ -682,9 +681,9 @@ export const FleetView: React.FC<FleetViewProps> = ({
                       <button
                         type="button"
                         onClick={(e) => openEditModal(vehiculo, e)}
-                        className="btn-tactile inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-white/[0.08] bg-[#07090E] hover:bg-slate-800 text-xs font-medium text-slate-200 cursor-pointer"
+                        className="btn-tactile inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 cursor-pointer"
                       >
-                        <Edit3 className="w-3.5 h-3.5 text-slate-400" />
+                        <Edit3 className="w-3.5 h-3.5 text-slate-500" />
                         <span>Editar</span>
                       </button>
 
@@ -694,7 +693,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
                           e.stopPropagation();
                           onOpenLayoutEditor(vehiculo.id);
                         }}
-                        className="btn-tactile flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/35 text-amber-300 font-semibold text-xs cursor-pointer"
+                        className="btn-tactile flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-[#EFF6FF] hover:bg-blue-100/80 border border-[#BFDBFE] text-[#1D4ED8] font-semibold text-xs cursor-pointer"
                       >
                         <Grid className="w-3.5 h-3.5" />
                         <span>Diseñar Mapa de Asientos</span>
@@ -708,7 +707,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
         </div>
 
         {/* Right Technical Unit Inspector (Desktop Sticky Panel) */}
-        <aside className="hidden lg:block lg:col-span-5 xl:col-span-4 bg-[#131926] border border-white/[0.09] rounded-xl p-5 sticky top-20 shadow-2xl">
+        <aside className="hidden lg:block lg:col-span-5 xl:col-span-4 bg-white border border-slate-200 rounded-xl p-5 sticky top-20 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
           {inspectedVehiculo ? (
             renderUnitInspector(inspectedVehiculo)
           ) : (
@@ -722,14 +721,14 @@ export const FleetView: React.FC<FleetViewProps> = ({
       {/* Mobile / iPhone Slide-Up Bottom Sheet Inspector */}
       {mobileInspectorOpen && inspectedVehiculo && (
         <div
-          className="fixed inset-0 z-50 lg:hidden flex flex-col justify-end bg-black/75 backdrop-blur-sm animate-modal-backdrop"
+          className="fixed inset-0 z-50 lg:hidden flex flex-col justify-end bg-slate-900/40 backdrop-blur-xs animate-modal-backdrop"
           onClick={() => setMobileInspectorOpen(false)}
         >
           <div
-            className="bg-[#131926] border-t border-white/[0.14] rounded-t-2xl p-5 max-h-[85vh] overflow-y-auto pb-safe-bottom animate-sheet-up"
+            className="bg-white border-t border-slate-200 rounded-t-2xl p-5 max-h-[85vh] overflow-y-auto pb-safe-bottom animate-sheet-up shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-10 h-1 rounded-full bg-slate-600 mx-auto mb-4" />
+            <div className="w-10 h-1 rounded-full bg-slate-300 mx-auto mb-4" />
             {renderUnitInspector(inspectedVehiculo)}
           </div>
         </div>
@@ -738,20 +737,20 @@ export const FleetView: React.FC<FleetViewProps> = ({
       {/* Modal: Registrar / Editar Unidad */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-modal-backdrop"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-modal-backdrop"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-vehiculo-title"
         >
-          <div className="w-full max-w-lg bg-[#131926] border border-white/[0.12] rounded-2xl shadow-2xl overflow-hidden animate-modal-panel">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.08] bg-[#07090E]/80">
+          <div className="w-full max-w-lg bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden animate-modal-panel">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-[#F8FAFC]">
               <div>
-                <span className="text-[10px] font-mono-tabular uppercase tracking-widest text-amber-400">
+                <span className="text-[10px] font-mono-tabular uppercase tracking-widest text-blue-600 font-semibold">
                   {editingVehiculo ? 'ACTUALIZACIÓN DE UNIDAD' : 'ALTA DE PARQUE MÓVIL'}
                 </span>
                 <h2
                   id="modal-vehiculo-title"
-                  className="text-lg font-bold text-slate-100 font-display"
+                  className="text-lg font-bold text-slate-900 font-display"
                 >
                   {editingVehiculo
                     ? `Ficha Técnica · Dominio ${editingVehiculo.patente}`
@@ -761,7 +760,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-white/[0.06]"
+                className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200/60"
                 aria-label="Cerrar modal"
               >
                 <X className="w-5 h-5" />
@@ -770,18 +769,18 @@ export const FleetView: React.FC<FleetViewProps> = ({
 
             <form onSubmit={handleSaveVehiculo} className="p-6 space-y-4">
               {formError && (
-                <div className="p-3.5 rounded-xl bg-rose-500/12 border border-rose-500/40 flex items-start gap-2.5 text-rose-200 text-xs">
-                  <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-2.5 text-rose-800 text-xs">
+                  <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
                   <span>{formError}</span>
                 </div>
               )}
 
-              <div className="flex items-center justify-between p-3.5 rounded-xl bg-[#07090E] border border-white/[0.08]">
+              <div className="flex items-center justify-between p-3.5 rounded-xl bg-[#F8FAFC] border border-slate-200">
                 <div className="space-y-0.5">
-                  <span className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400">
+                  <span className="text-[10px] font-mono-tabular uppercase tracking-wider text-slate-500 font-semibold">
                     Chapa Mercosur Oficial
                   </span>
-                  <p className="text-xs text-slate-400">República Argentina · RNPA / CNRT</p>
+                  <p className="text-xs text-slate-600">República Argentina · RNPA / CNRT</p>
                 </div>
                 <MercosurPlate patente={formPatente || 'AB123CD'} size="md" />
               </div>
@@ -790,7 +789,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
                 <div>
                   <label
                     htmlFor="veh-patente"
-                    className="block text-xs font-medium text-slate-300 mb-1.5"
+                    className="block text-xs font-semibold text-slate-700 mb-1.5"
                   >
                     Dominio / Patente Mercosur *
                   </label>
@@ -802,14 +801,14 @@ export const FleetView: React.FC<FleetViewProps> = ({
                     value={formPatente}
                     onChange={(e) => setFormPatente(e.target.value.toUpperCase())}
                     placeholder="Ej: AG482KM"
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#07090E] border border-white/[0.1] text-sm font-mono-tabular uppercase text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#F8FAFC] border border-slate-300 text-sm font-mono-tabular uppercase text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="veh-interno"
-                    className="block text-xs font-medium text-slate-300 mb-1.5"
+                    className="block text-xs font-semibold text-slate-700 mb-1.5"
                   >
                     Legajo / Interno Operativo
                   </label>
@@ -819,7 +818,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
                     value={formInterno}
                     onChange={(e) => setFormInterno(e.target.value)}
                     placeholder="Ej: INT-108"
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#07090E] border border-white/[0.1] text-sm font-mono-tabular text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#F8FAFC] border border-slate-300 text-sm font-mono-tabular text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white"
                   />
                 </div>
               </div>
@@ -827,7 +826,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
               <div>
                 <label
                   htmlFor="veh-modelo"
-                  className="block text-xs font-medium text-slate-300 mb-1.5"
+                  className="block text-xs font-semibold text-slate-700 mb-1.5"
                 >
                   Chasis y Carrocería
                 </label>
@@ -837,7 +836,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
                   value={formMarcaModelo}
                   onChange={(e) => setFormMarcaModelo(e.target.value)}
                   placeholder="Ej: Scania K440EB / Marcopolo Paradiso G8 1800 DD"
-                  className="w-full px-3.5 py-2.5 rounded-lg bg-[#07090E] border border-white/[0.1] text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-[#F8FAFC] border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white"
                 />
               </div>
 
@@ -845,7 +844,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
                 <div>
                   <label
                     htmlFor="veh-tipo"
-                    className="block text-xs font-medium text-slate-300 mb-1.5"
+                    className="block text-xs font-semibold text-slate-700 mb-1.5"
                   >
                     Tipo de Servicio *
                   </label>
@@ -853,7 +852,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
                     id="veh-tipo"
                     value={formTipo}
                     onChange={(e) => setFormTipo(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-lg bg-[#07090E] border border-white/[0.1] text-sm text-slate-100 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3 py-2.5 rounded-lg bg-[#F8FAFC] border border-slate-300 text-sm text-slate-900 focus:outline-none focus:border-blue-600"
                   >
                     <option value="semicama">Semicama</option>
                     <option value="cama_ejecutivo">Cama Ejecutivo</option>
@@ -864,7 +863,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
                 <div>
                   <label
                     htmlFor="veh-pisos"
-                    className="block text-xs font-medium text-slate-300 mb-1.5"
+                    className="block text-xs font-semibold text-slate-700 mb-1.5"
                   >
                     Niveles / Pisos *
                   </label>
@@ -872,7 +871,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
                     id="veh-pisos"
                     value={formPisos}
                     onChange={(e) => setFormPisos(Number(e.target.value) as 1 | 2)}
-                    className="w-full px-3 py-2.5 rounded-lg bg-[#07090E] border border-white/[0.1] text-sm font-mono-tabular text-slate-100 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3 py-2.5 rounded-lg bg-[#F8FAFC] border border-slate-300 text-sm font-mono-tabular text-slate-900 focus:outline-none focus:border-blue-600"
                   >
                     <option value={2}>2 Pisos (Doble Piso)</option>
                     <option value={1}>1 Piso (Simple)</option>
@@ -882,7 +881,7 @@ export const FleetView: React.FC<FleetViewProps> = ({
                 <div>
                   <label
                     htmlFor="veh-capacidad"
-                    className="block text-xs font-medium text-slate-300 mb-1.5"
+                    className="block text-xs font-semibold text-slate-700 mb-1.5"
                   >
                     Plazas Totales *
                   </label>
@@ -894,13 +893,13 @@ export const FleetView: React.FC<FleetViewProps> = ({
                     required
                     value={formCapacidad}
                     onChange={(e) => setFormCapacidad(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#07090E] border border-white/[0.1] text-sm font-mono-tabular text-slate-100 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#F8FAFC] border border-slate-300 text-sm font-mono-tabular text-slate-900 focus:outline-none focus:border-blue-600"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
                   Estado Operativo de la Unidad *
                 </label>
                 <div className="grid grid-cols-3 gap-2.5">
@@ -915,10 +914,10 @@ export const FleetView: React.FC<FleetViewProps> = ({
                       key={option.id}
                       type="button"
                       onClick={() => setFormEstado(option.id)}
-                      className={`btn-tactile py-2 px-3 rounded-lg border text-xs font-medium cursor-pointer ${
+                      className={`btn-tactile py-2 px-3 rounded-lg border text-xs font-semibold cursor-pointer ${
                         formEstado === option.id
-                          ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
-                          : 'bg-[#07090E] border-white/[0.08] text-slate-400 hover:text-slate-200'
+                          ? 'bg-[#EFF6FF] border-[#BFDBFE] text-[#1D4ED8]'
+                          : 'bg-[#F8FAFC] border-slate-200 text-slate-600 hover:text-slate-900'
                       }`}
                     >
                       {option.label}
@@ -927,18 +926,18 @@ export const FleetView: React.FC<FleetViewProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/[0.08]">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="btn-tactile px-4 py-2 rounded-lg border border-white/[0.1] bg-[#07090E] hover:bg-slate-800 text-xs font-medium text-slate-300 cursor-pointer"
+                  className="btn-tactile px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="btn-tactile inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-[#F59E0B] hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-semibold text-xs shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer"
+                  className="btn-tactile inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-[#2563EB] hover:bg-blue-700 disabled:opacity-50 text-white font-semibold text-xs shadow-sm cursor-pointer"
                 >
                   <CheckCircle2 className="w-4 h-4" />
                   <span>

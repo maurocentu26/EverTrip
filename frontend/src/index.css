@@ -6,21 +6,25 @@
     --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
     --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 
-    /* Midnight Transit Obsidian Palette (EVE-15) */
-    --bg-obsidian: #07090E;
-    --bg-surface: #0D111A;
-    --bg-elevated: #131926;
-    --border-hairline: rgba(255, 255, 255, 0.07);
-    --border-hairline-strong: rgba(255, 255, 255, 0.13);
+    /* Nordic Daylight Palette (Stripe / Apple Light Mode) */
+    --bg-canvas: #F8FAFC;
+    --bg-surface: #FFFFFF;
+    --bg-subtle: #F1F5F9;
+    --border-hairline: #E2E8F0;
+    --border-hairline-hover: #CBD5E1;
 
-    --accent-amber: #F59E0B;
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-tertiary: #64748B;
+
+    --accent-blue: #2563EB;
     --accent-emerald: #10B981;
-    --accent-orange: #F97316;
+    --accent-amber: #D97706;
   }
 
   body {
-    background-color: var(--bg-obsidian);
-    color: #F1F5F9;
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
     font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
     letter-spacing: -0.011em;
     overflow-x: hidden;
@@ -30,6 +34,7 @@
   h1, h2, h3, h4, .font-display {
     font-family: 'Space Grotesk', sans-serif;
     letter-spacing: -0.025em;
+    color: #0F172A;
   }
 
   .font-mono-tabular {
@@ -40,39 +45,36 @@
 
 /* Surface & Border utilities */
 .surface-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-hairline);
+  background-color: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .surface-elevated {
-  background-color: var(--bg-elevated);
-  border: 1px solid var(--border-hairline-strong);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.75);
+  background-color: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.12), 0 1px 3px rgba(15, 23, 42, 0.05);
 }
 
-.border-hairline {
-  border-color: var(--border-hairline);
-}
-
-/* Precision operational console background pattern */
+/* Precision operational console background pattern (Nordic Daylight) */
 .bg-console-grid {
-  background-color: #07090E;
+  background-color: #F8FAFC;
   background-image:
-    radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.045), transparent 55%),
-    linear-gradient(to right, rgba(255, 255, 255, 0.024) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.024) 1px, transparent 1px);
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.045), transparent 55%),
+    linear-gradient(to right, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
   background-size: 100% 100%, 32px 32px, 32px 32px;
 }
 
-/* Automotive & Aviation Telemetry Blueprint Grid */
+/* Technical CAD Blueprint Grid in Light Mode */
 .bg-blueprint-grid {
-  background-color: #06080D;
+  background-color: #F1F5F9;
   background-image:
-    radial-gradient(circle at 50% 15%, rgba(245, 158, 11, 0.06), transparent 60%),
-    linear-gradient(to right, rgba(56, 189, 248, 0.045) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.045) 1px, transparent 1px),
-    linear-gradient(to right, rgba(56, 189, 248, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(56, 189, 248, 0.1) 1px, transparent 1px);
+    radial-gradient(circle at 50% 15%, rgba(37, 99, 235, 0.06), transparent 65%),
+    linear-gradient(to right, rgba(37, 99, 235, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 99, 235, 0.05) 1px, transparent 1px),
+    linear-gradient(to right, rgba(37, 99, 235, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 99, 235, 0.1) 1px, transparent 1px);
   background-size: 100% 100%, 16px 16px, 16px 16px, 80px 80px, 80px 80px;
 }
 
@@ -181,21 +183,21 @@
   }
 }
 
-/* Custom subtle scrollbars for operational console */
+/* Custom subtle scrollbars for Nordic Daylight console */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #07090E;
+  background: #F1F5F9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1B2333;
+  background: #CBD5E1;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2C3850;
+  background: #94A3B8;
 }

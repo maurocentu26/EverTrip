@@ -192,26 +192,26 @@ export const App: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#07090E] bg-console-grid text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#F8FAFC] bg-console-grid text-[#0F172A] flex flex-col">
       {/* =====================================================================
-          TOP COMMAND BAR (52px · Linear + FlightAware Precision)
+          TOP COMMAND BAR (52px · Nordic Daylight · Stripe / Apple Precision)
          ===================================================================== */}
-      <header className="h-[52px] px-4 lg:px-5 bg-[#07090E]/90 backdrop-blur-md border-b border-white/[0.07] flex items-center justify-between gap-3 sticky top-0 z-40">
+      <header className="h-[52px] px-4 lg:px-5 bg-white/95 backdrop-blur-md border-b border-slate-200 flex items-center justify-between gap-3 sticky top-0 z-40 shadow-[0_1px_2px_rgba(15,23,42,0.03)]">
         {/* Left: Brand Identity + Module Breadcrumb */}
         <div className="flex items-center gap-3 min-w-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#F59E0B] text-slate-950 flex items-center justify-center font-display font-bold text-xs shadow-[0_0_16px_rgba(245,158,11,0.45)] shrink-0">
+            <div className="w-7 h-7 rounded-lg bg-[#2563EB] text-white flex items-center justify-center font-display font-bold text-xs shadow-xs shrink-0">
               ET
             </div>
-            <span className="font-display font-bold text-sm tracking-tight text-slate-100">
+            <span className="font-display font-bold text-sm tracking-tight text-slate-900">
               EVERTRIP
             </span>
           </div>
 
-          <span className="text-slate-700 hidden sm:inline">/</span>
+          <span className="text-slate-300 hidden sm:inline">/</span>
 
           <div className="hidden sm:flex items-center gap-2 text-xs font-mono-tabular truncate">
-            <span className="text-amber-400 font-semibold">
+            <span className="text-blue-600 font-semibold">
               {activeModule === 'rutas' && 'RED DE RUTAS (EVE-5)'}
               {activeModule === 'flota' && 'FLOTA MERCOSUR (EVE-9)'}
               {activeModule === 'layout' && 'BLUEPRINT CHASIS (EVE-13)'}
@@ -226,15 +226,15 @@ export const App: React.FC = () => {
             setCommandOpen(true);
             setCommandQuery('');
           }}
-          className="btn-tactile flex-1 max-w-md mx-2 px-3 py-1.5 rounded-lg bg-[#0D111A] hover:bg-[#131926] border border-white/[0.08] hover:border-amber-500/40 flex items-center justify-between gap-3 text-xs text-slate-400 cursor-pointer"
+          className="btn-tactile flex-1 max-w-md mx-2 px-3 py-1.5 rounded-lg bg-[#F1F5F9] hover:bg-slate-200/70 border border-slate-200 hover:border-slate-300 flex items-center justify-between gap-3 text-xs text-slate-500 cursor-pointer"
         >
           <span className="flex items-center gap-2 truncate">
-            <Search className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <Search className="w-3.5 h-3.5 text-blue-600 shrink-0" />
             <span className="truncate">
               Buscar ruta, patente Mercosur o ejecutar comando...
             </span>
           </span>
-          <kbd className="px-1.5 py-0.5 rounded bg-[#07090E] border border-white/[0.1] font-mono-tabular text-[10px] text-slate-300 shrink-0">
+          <kbd className="px-1.5 py-0.5 rounded bg-white border border-slate-200 font-mono-tabular text-[10px] font-semibold text-slate-600 shrink-0 shadow-2xs">
             ⌘K
           </kbd>
         </button>
@@ -242,7 +242,7 @@ export const App: React.FC = () => {
         {/* Right: Active Unit Quick Selector + Live Telemetry Status */}
         <div className="flex items-center gap-2.5 shrink-0">
           {vehiculos.length > 0 && (
-            <div className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#0D111A] border border-white/[0.07] text-[11px] font-mono-tabular">
+            <div className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F8FAFC] border border-slate-200 text-[11px] font-mono-tabular">
               <span className="text-slate-500">UNIDAD:</span>
               <select
                 value={selectedVehiculoId || ''}
@@ -251,10 +251,10 @@ export const App: React.FC = () => {
                   setActiveModule('layout');
                 }}
                 aria-label="Selector rápido de unidad hacia Blueprint"
-                className="bg-transparent text-slate-200 font-semibold focus:outline-none cursor-pointer"
+                className="bg-transparent text-slate-800 font-semibold focus:outline-none cursor-pointer"
               >
                 {vehiculos.map((v) => (
-                  <option key={v.id} value={v.id} className="bg-[#07090E]">
+                  <option key={v.id} value={v.id} className="bg-white text-slate-900">
                     {formatPatenteMercosur(v.patente)} ({v.interno})
                   </option>
                 ))}
@@ -265,8 +265,8 @@ export const App: React.FC = () => {
           <div
             className={`px-2.5 py-1 rounded-lg border text-[10px] font-mono-tabular font-semibold flex items-center gap-1.5 ${
               connectionSource === 'api'
-                ? 'bg-emerald-500/12 border-emerald-500/30 text-emerald-300'
-                : 'bg-amber-500/12 border-amber-500/30 text-amber-300'
+                ? 'bg-[#DCFCE7] border-[#A7F3D0] text-[#15803D]'
+                : 'bg-[#EFF6FF] border-[#BFDBFE] text-[#1D4ED8]'
             }`}
           >
             <Radio className="w-3 h-3 animate-pulse" />
@@ -281,21 +281,21 @@ export const App: React.FC = () => {
       <div className="flex-1 flex min-h-0">
         {/* Desktop Left Precision Rail */}
         <aside
-          className={`hidden lg:flex flex-col justify-between bg-[#0D111A]/90 border-r border-white/[0.07] shrink-0 transition-[width] duration-200 sticky top-[52px] h-[calc(100vh-52px)] ${
+          className={`hidden lg:flex flex-col justify-between bg-white border-r border-slate-200 shrink-0 transition-[width] duration-200 sticky top-[52px] h-[calc(100vh-52px)] ${
             railExpanded ? 'w-60' : 'w-16'
           }`}
         >
           <div className="p-2.5 space-y-1.5">
             <div className="flex items-center justify-between px-2 py-1">
               {railExpanded && (
-                <span className="text-[10px] font-mono-tabular uppercase tracking-widest text-slate-500">
+                <span className="text-[10px] font-mono-tabular font-semibold uppercase tracking-widest text-slate-400">
                   MÓDULOS ÉPICA 1
                 </span>
               )}
               <button
                 type="button"
                 onClick={() => setRailExpanded((prev) => !prev)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-white/[0.05] cursor-pointer mx-auto lg:mx-0"
+                className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 cursor-pointer mx-auto lg:mx-0"
                 title={railExpanded ? 'Compactar rail lateral' : 'Expandir rail lateral'}
               >
                 {railExpanded ? (
@@ -316,23 +316,27 @@ export const App: React.FC = () => {
                   title={`${item.label} (${item.shortcut})`}
                   className={`btn-tactile w-full rounded-xl border flex items-center justify-between gap-2.5 p-2.5 cursor-pointer ${
                     isActive
-                      ? 'bg-[#131926] border-amber-500/45 text-slate-100 shadow-lg'
-                      : 'bg-transparent border-transparent hover:bg-white/[0.04] text-slate-400 hover:text-slate-200'
+                      ? 'bg-[#EFF6FF] border-[#BFDBFE] text-[#1D4ED8] shadow-2xs'
+                      : 'bg-transparent border-transparent hover:bg-slate-100/80 text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <div
                       className={`w-8 h-8 rounded-lg border flex items-center justify-center shrink-0 ${
                         isActive
-                          ? 'bg-amber-500/15 border-amber-500/45 text-amber-400'
-                          : 'bg-[#07090E] border-white/[0.07] text-slate-400'
+                          ? 'bg-[#2563EB] border-[#2563EB] text-white'
+                          : 'bg-[#F8FAFC] border-slate-200 text-slate-500'
                       }`}
                     >
                       {item.icon}
                     </div>
                     {railExpanded && (
                       <div className="text-left min-w-0">
-                        <div className="text-xs font-semibold text-slate-100 truncate">
+                        <div
+                          className={`text-xs font-bold truncate ${
+                            isActive ? 'text-[#1D4ED8]' : 'text-slate-800'
+                          }`}
+                        >
                           {item.label}
                         </div>
                         <div className="text-[10px] font-mono-tabular text-slate-500 truncate">
@@ -346,8 +350,8 @@ export const App: React.FC = () => {
                     <span
                       className={`px-1.5 py-0.5 rounded font-mono-tabular text-[11px] font-bold shrink-0 ${
                         isActive
-                          ? 'bg-[#F59E0B] text-slate-950'
-                          : 'bg-[#07090E] text-slate-300 border border-white/[0.07]'
+                          ? 'bg-[#2563EB] text-white'
+                          : 'bg-[#F1F5F9] text-slate-600 border border-slate-200'
                       }`}
                     >
                       {item.badgeCount}
@@ -359,17 +363,17 @@ export const App: React.FC = () => {
           </div>
 
           {/* Rail Bottom Operator Info */}
-          <div className="p-3 border-t border-white/[0.07] bg-[#07090E]/50">
+          <div className="p-3 border-t border-slate-200 bg-[#F8FAFC]">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#131926] border border-white/[0.1] flex items-center justify-center font-mono-tabular font-bold text-amber-400 text-xs shrink-0">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center font-mono-tabular font-bold text-blue-700 text-xs shrink-0">
                 MG
               </div>
               {railExpanded && (
                 <div className="min-w-0">
-                  <div className="text-xs font-semibold text-slate-200 truncate">
+                  <div className="text-xs font-bold text-slate-900 truncate">
                     Mauro García
                   </div>
-                  <div className="text-[10px] font-mono-tabular text-emerald-400 flex items-center gap-1">
+                  <div className="text-[10px] font-mono-tabular text-[#15803D] font-semibold flex items-center gap-1">
                     <ShieldCheck className="w-3 h-3" /> Admin Despacho
                   </div>
                 </div>
@@ -420,7 +424,7 @@ export const App: React.FC = () => {
          ===================================================================== */}
       <nav
         aria-label="Navegación rápida móvil"
-        className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[#0D111A]/95 backdrop-blur-xl border-t border-white/[0.1] px-2 pt-1.5 pb-safe-bottom"
+        className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-xl border-t border-slate-200 px-2 pt-1.5 pb-safe-bottom shadow-[0_-4px_20px_rgba(15,23,42,0.06)]"
       >
         <div className="grid grid-cols-4 gap-1 max-w-md mx-auto">
           {navItems.map((item) => {
@@ -432,8 +436,8 @@ export const App: React.FC = () => {
                 onClick={() => setActiveModule(item.id)}
                 className={`btn-tactile min-h-[48px] rounded-xl flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
                   isActive
-                    ? 'bg-amber-500/15 text-amber-400 border border-amber-500/35'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE]'
+                    : 'text-slate-500 hover:text-slate-900'
                 }`}
               >
                 {item.icon}
@@ -450,44 +454,44 @@ export const App: React.FC = () => {
               setCommandOpen(true);
               setCommandQuery('');
             }}
-            className="btn-tactile min-h-[48px] rounded-xl flex flex-col items-center justify-center gap-0.5 text-slate-300 hover:text-amber-300 cursor-pointer"
+            className="btn-tactile min-h-[48px] rounded-xl flex flex-col items-center justify-center gap-0.5 text-slate-600 hover:text-blue-600 cursor-pointer"
           >
-            <Command className="w-4 h-4 text-amber-400" />
+            <Command className="w-4 h-4 text-blue-600" />
             <span className="text-[10px] font-mono-tabular font-semibold">⌘K</span>
           </button>
         </div>
       </nav>
 
       {/* =====================================================================
-          LINEAR-STYLE INTERACTIVE COMMAND PALETTE (⌘K)
+          LINEAR-STYLE INTERACTIVE COMMAND PALETTE (⌘K) IN NORDIC DAYLIGHT
          ===================================================================== */}
       {commandOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 p-4 bg-black/80 backdrop-blur-sm animate-modal-backdrop"
+          className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 p-4 bg-slate-900/40 backdrop-blur-xs animate-modal-backdrop"
           role="dialog"
           aria-modal="true"
           aria-label="Paleta de comandos rápidos"
           onClick={() => setCommandOpen(false)}
         >
           <div
-            className="w-full max-w-xl bg-[#131926] border border-white/[0.14] rounded-2xl shadow-2xl overflow-hidden animate-modal-panel"
+            className="w-full max-w-xl bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden animate-modal-panel"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Search Input Header */}
-            <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/[0.08] bg-[#07090E]">
-              <Search className="w-4 h-4 text-amber-400 shrink-0" />
+            <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-200 bg-[#F8FAFC]">
+              <Search className="w-4 h-4 text-blue-600 shrink-0" />
               <input
                 type="text"
                 autoFocus
                 value={commandQuery}
                 onChange={(e) => setCommandQuery(e.target.value)}
                 placeholder="Saltar a ruta (Rosario, Bariloche), patente (AG 482 KM) o acción..."
-                className="w-full bg-transparent text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none"
+                className="w-full bg-transparent text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => setCommandOpen(false)}
-                className="px-1.5 py-0.5 rounded bg-[#131926] border border-white/[0.1] text-[10px] font-mono-tabular text-slate-400 hover:text-white"
+                className="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] font-mono-tabular font-semibold text-slate-500 hover:text-slate-900"
               >
                 ESC
               </button>
@@ -496,7 +500,7 @@ export const App: React.FC = () => {
             <div className="max-h-[65vh] overflow-y-auto p-3 space-y-4">
               {/* Quick Actions */}
               <div>
-                <div className="px-2 pb-1.5 text-[10px] font-mono-tabular uppercase tracking-widest text-slate-500">
+                <div className="px-2 pb-1.5 text-[10px] font-mono-tabular font-semibold uppercase tracking-widest text-slate-400">
                   Acciones Directas de Despacho
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
@@ -507,9 +511,9 @@ export const App: React.FC = () => {
                       setActiveModule('rutas');
                       setCreateRutaTrigger((c) => c + 1);
                     }}
-                    className="btn-tactile p-2.5 rounded-xl bg-[#07090E] hover:bg-amber-500/15 border border-white/[0.07] hover:border-amber-500/40 text-left flex items-center gap-2 text-xs font-medium text-slate-200 cursor-pointer"
+                    className="btn-tactile p-2.5 rounded-xl bg-[#F8FAFC] hover:bg-[#EFF6FF] border border-slate-200 hover:border-blue-300 text-left flex items-center gap-2 text-xs font-semibold text-slate-800 cursor-pointer"
                   >
-                    <Plus className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <Plus className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                     <span>Nueva Ruta</span>
                   </button>
 
@@ -520,9 +524,9 @@ export const App: React.FC = () => {
                       setActiveModule('flota');
                       setCreateVehiculoTrigger((c) => c + 1);
                     }}
-                    className="btn-tactile p-2.5 rounded-xl bg-[#07090E] hover:bg-emerald-500/15 border border-white/[0.07] hover:border-emerald-500/40 text-left flex items-center gap-2 text-xs font-medium text-slate-200 cursor-pointer"
+                    className="btn-tactile p-2.5 rounded-xl bg-[#F8FAFC] hover:bg-[#DCFCE7]/60 border border-slate-200 hover:border-emerald-300 text-left flex items-center gap-2 text-xs font-semibold text-slate-800 cursor-pointer"
                   >
-                    <Plus className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <Plus className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>Registrar Unidad</span>
                   </button>
 
@@ -532,9 +536,9 @@ export const App: React.FC = () => {
                       setCommandOpen(false);
                       setActiveModule('layout');
                     }}
-                    className="btn-tactile p-2.5 rounded-xl bg-[#07090E] hover:bg-sky-500/15 border border-white/[0.07] hover:border-sky-500/40 text-left flex items-center gap-2 text-xs font-medium text-slate-200 cursor-pointer"
+                    className="btn-tactile p-2.5 rounded-xl bg-[#F8FAFC] hover:bg-[#EFF6FF] border border-slate-200 hover:border-blue-300 text-left flex items-center gap-2 text-xs font-semibold text-slate-800 cursor-pointer"
                   >
-                    <Grid className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+                    <Grid className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                     <span>Abrir Blueprint</span>
                   </button>
                 </div>
@@ -543,7 +547,7 @@ export const App: React.FC = () => {
               {/* Matching Routes */}
               {commandResults.matchedRutas.length > 0 && (
                 <div>
-                  <div className="px-2 pb-1.5 text-[10px] font-mono-tabular uppercase tracking-widest text-slate-500">
+                  <div className="px-2 pb-1.5 text-[10px] font-mono-tabular font-semibold uppercase tracking-widest text-slate-400">
                     Corredores Nacionales ({commandResults.matchedRutas.length})
                   </div>
                   <div className="space-y-1">
@@ -555,18 +559,18 @@ export const App: React.FC = () => {
                           setCommandOpen(false);
                           setActiveModule('rutas');
                         }}
-                        className="w-full px-3 py-2 rounded-xl hover:bg-white/[0.05] flex items-center justify-between gap-2 text-xs text-left cursor-pointer"
+                        className="w-full px-3 py-2 rounded-xl hover:bg-slate-100 flex items-center justify-between gap-2 text-xs text-left cursor-pointer"
                       >
                         <div className="flex items-center gap-2 truncate">
-                          <Compass className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                          <span className="text-slate-100 font-medium truncate">
+                          <Compass className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                          <span className="text-slate-900 font-semibold truncate">
                             {r.origen} → {r.destino}
                           </span>
                           <span className="font-mono-tabular text-[11px] text-slate-500">
                             ({r.distancia_km} km)
                           </span>
                         </div>
-                        <span className="font-mono-tabular font-semibold text-amber-400 shrink-0">
+                        <span className="font-mono-tabular font-bold text-blue-700 shrink-0">
                           {formatARS(r.precio_base)}
                         </span>
                       </button>
@@ -578,7 +582,7 @@ export const App: React.FC = () => {
               {/* Matching Fleet Vehicles */}
               {commandResults.matchedVehiculos.length > 0 && (
                 <div>
-                  <div className="px-2 pb-1.5 text-[10px] font-mono-tabular uppercase tracking-widest text-slate-500">
+                  <div className="px-2 pb-1.5 text-[10px] font-mono-tabular font-semibold uppercase tracking-widest text-slate-400">
                     Unidades de Flota → Abrir en Blueprint ({commandResults.matchedVehiculos.length})
                   </div>
                   <div className="space-y-1">
@@ -590,18 +594,18 @@ export const App: React.FC = () => {
                           setCommandOpen(false);
                           handleOpenLayoutForVehicle(v.id);
                         }}
-                        className="w-full px-3 py-2 rounded-xl hover:bg-white/[0.05] flex items-center justify-between gap-2 text-xs text-left cursor-pointer"
+                        className="w-full px-3 py-2 rounded-xl hover:bg-slate-100 flex items-center justify-between gap-2 text-xs text-left cursor-pointer"
                       >
                         <div className="flex items-center gap-2.5 truncate">
-                          <span className="px-2 py-0.5 rounded bg-[#07090E] border border-white/[0.1] font-mono-tabular font-bold text-slate-100 text-[11px]">
+                          <span className="px-2 py-0.5 rounded bg-[#F8FAFC] border border-slate-300 font-mono-tabular font-bold text-slate-900 text-[11px]">
                             {formatPatenteMercosur(v.patente)}
                           </span>
-                          <span className="text-amber-400 font-mono-tabular font-semibold">
+                          <span className="text-blue-600 font-mono-tabular font-bold">
                             {v.interno}
                           </span>
-                          <span className="text-slate-400 truncate">{v.marca_modelo}</span>
+                          <span className="text-slate-600 truncate">{v.marca_modelo}</span>
                         </div>
-                        <span className="inline-flex items-center gap-1 text-[11px] font-mono-tabular text-emerald-400 shrink-0">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-mono-tabular font-semibold text-blue-600 shrink-0">
                           <span>Plano {v.capacidad_asientos}p</span>
                           <ArrowRight className="w-3 h-3" />
                         </span>
@@ -615,7 +619,7 @@ export const App: React.FC = () => {
         </div>
       )}
 
-      {/* Sonner-style Operational Toast Stack */}
+      {/* Sonner-style Operational Toast Stack in Nordic Daylight */}
       <div
         className="fixed bottom-16 lg:bottom-5 right-4 sm:right-5 z-50 flex flex-col gap-2 max-w-md w-full pointer-events-none px-4 sm:px-0"
         aria-live="polite"
@@ -623,28 +627,28 @@ export const App: React.FC = () => {
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`pointer-events-auto flex items-center justify-between gap-3 px-4 py-3 rounded-xl border shadow-2xl backdrop-blur-md animate-console-enter ${
+            className={`pointer-events-auto flex items-center justify-between gap-3 px-4 py-3 rounded-xl border shadow-xl bg-white animate-console-enter ${
               t.type === 'success'
-                ? 'bg-[#131926]/95 border-emerald-500/45 text-emerald-200'
+                ? 'border-[#A7F3D0] text-[#15803D]'
                 : t.type === 'warning'
-                ? 'bg-[#131926]/95 border-amber-500/45 text-amber-200'
-                : 'bg-[#131926]/95 border-rose-500/45 text-rose-200'
+                ? 'border-[#FDE68A] text-[#B45309]'
+                : 'border-rose-200 text-rose-700'
             }`}
           >
-            <div className="flex items-center gap-2.5 text-xs font-medium">
+            <div className="flex items-center gap-2.5 text-xs font-semibold">
               {t.type === 'success' && (
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0" />
               )}
               {t.type === 'warning' && (
-                <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
               )}
-              {t.type === 'error' && <XCircle className="w-4 h-4 text-rose-400 shrink-0" />}
+              {t.type === 'error' && <XCircle className="w-4 h-4 text-rose-600 shrink-0" />}
               <span>{t.message}</span>
             </div>
             <button
               type="button"
               onClick={() => setToasts((prev) => prev.filter((item) => item.id !== t.id))}
-              className="text-slate-400 hover:text-slate-100 p-1 cursor-pointer"
+              className="text-slate-400 hover:text-slate-800 p-1 cursor-pointer"
               aria-label="Cerrar notificación"
             >
               <X className="w-3.5 h-3.5" />

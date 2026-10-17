@@ -4,7 +4,6 @@ import {
   Plus,
   Search,
   MapPin,
-  ArrowRight,
   Compass,
   DollarSign,
   Activity,
@@ -75,14 +74,12 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
   const [formError, setFormError] = useState<{ code?: string; message: string } | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
 
-  // Open create modal when triggered from Command Palette
   React.useEffect(() => {
     if (externalCreateTrigger && externalCreateTrigger > 0) {
       openCreateModal();
     }
   }, [externalCreateTrigger]);
 
-  // Keep inspectedRutaId valid
   const inspectedRuta = useMemo(() => {
     if (!rutas.length) return null;
     return rutas.find((r) => r.id === inspectedRutaId) || rutas[0];
@@ -115,7 +112,7 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
     });
   }, [rutas, selectedOrigen, selectedDestino, statusFilter, searchQuery]);
 
-  // KPIs computation (Stripe / Vercel 1px border ledger style)
+  // KPIs computation (Stripe / Apple 1px border ledger style)
   const kpis = useMemo(() => {
     const activas = rutas.filter((r) => r.activa);
     const totalKmRed = activas.reduce((acc, r) => acc + Number(r.distancia_km || 0), 0);
@@ -286,12 +283,10 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
     return 0;
   }, [formDistancia, formPrecio]);
 
-  // Suggested vehicles for the inspected route based on distance
   const suggestedVehiculos = useMemo(() => {
     if (!inspectedRuta) return [];
     const actives = vehiculos.filter((v) => v.estado === 'activo');
     if (inspectedRuta.distancia_km >= 550) {
-      // Long haul: prefer cama_ejecutivo or suite_primera
       return actives.sort((a, b) =>
         a.tipo.includes('cama') || a.tipo.includes('suite') ? -1 : 1
       );
@@ -314,24 +309,24 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
     return (
       <div className="space-y-5">
         {/* Inspector Header */}
-        <div className="flex items-start justify-between gap-3 pb-3.5 border-b border-white/[0.07]">
+        <div className="flex items-start justify-between gap-3 pb-3.5 border-b border-slate-200">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono-tabular uppercase tracking-widest px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30">
+              <span className="text-[10px] font-mono-tabular uppercase tracking-widest px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold">
                 INSPECTOR DE TRAZA
               </span>
               <span className="text-[11px] font-mono-tabular text-slate-500">
                 #{ruta.id.slice(0, 8).toUpperCase()}
               </span>
             </div>
-            <h3 className="mt-2 text-base font-bold font-display text-slate-100 leading-snug">
+            <h3 className="mt-2 text-base font-bold font-display text-slate-900 leading-snug">
               {ruta.origen} → {ruta.destino}
             </h3>
           </div>
           <button
             type="button"
             onClick={() => setMobileInspectorOpen(false)}
-            className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white bg-white/[0.04]"
+            className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:text-slate-900 bg-slate-100"
             aria-label="Cerrar inspector"
           >
             <X className="w-4 h-4" />
@@ -339,9 +334,9 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
         </div>
 
         {/* Schematic Telemetry Visualizer */}
-        <div className="p-4 rounded-xl bg-[#07090E] border border-white/[0.07] space-y-3 relative overflow-hidden">
-          <div className="flex items-center justify-between text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400">
-            <span className="flex items-center gap-1.5 text-emerald-400">
+        <div className="p-4 rounded-xl bg-[#F8FAFC] border border-slate-200 space-y-3 relative overflow-hidden">
+          <div className="flex items-center justify-between text-[10px] font-mono-tabular uppercase tracking-wider text-slate-500">
+            <span className="flex items-center gap-1.5 text-blue-700 font-semibold">
               <Gauge className="w-3.5 h-3.5" /> Telemetría del Corredor
             </span>
             <span>Crucero 78 km/h prom.</span>
@@ -349,34 +344,34 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
 
           {/* Graphic Node-to-Node Corridor */}
           <div className="py-2">
-            <div className="flex items-center justify-between text-xs font-semibold text-slate-100 mb-2">
+            <div className="flex items-center justify-between text-xs font-semibold text-slate-900 mb-2">
               <span className="truncate max-w-[42%]">{ruta.origen}</span>
               <span className="truncate max-w-[42%] text-right">{ruta.destino}</span>
             </div>
 
             <div className="relative flex items-center justify-between">
-              <span className="w-3 h-3 rounded-full bg-amber-400 shadow-[0_0_10px_#F59E0B] z-10" />
-              <div className="flex-1 h-[2px] bg-gradient-to-r from-amber-500 via-sky-400 to-emerald-400 mx-1 relative flex items-center justify-center">
-                <span className="px-2.5 py-0.5 rounded-full bg-[#0D111A] border border-amber-500/40 font-mono-tabular text-[11px] font-bold text-amber-300 shadow-md">
+              <span className="w-3 h-3 rounded-full bg-blue-600 ring-4 ring-blue-100 z-10" />
+              <div className="flex-1 h-[2px] bg-gradient-to-r from-blue-600 via-sky-500 to-emerald-500 mx-1 relative flex items-center justify-center">
+                <span className="px-2.5 py-0.5 rounded-full bg-white border border-blue-200 font-mono-tabular text-[11px] font-bold text-blue-700 shadow-xs">
                   {ruta.distancia_km} KM · ~{hours}h {mins > 0 ? `${mins}m` : '00m'} est.
                 </span>
               </div>
-              <span className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_10px_#10B981] z-10" />
+              <span className="w-3 h-3 rounded-full bg-emerald-500 ring-4 ring-emerald-100 z-10" />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/[0.05] text-[11px] font-mono-tabular">
+          <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/80 text-[11px] font-mono-tabular">
             <div>
               <span className="text-slate-500 block">YIELD DEL TRAMO</span>
-              <span className="text-slate-100 font-semibold">
+              <span className="text-slate-900 font-bold">
                 {formatARSDecimal(yieldKm)}/km
               </span>
             </div>
             <div className="text-right">
               <span className="text-slate-500 block">VS MEDIA DE RED</span>
               <span
-                className={`font-semibold ${
-                  avgYieldDiff >= 0 ? 'text-emerald-400' : 'text-amber-400'
+                className={`font-bold ${
+                  avgYieldDiff >= 0 ? 'text-[#15803D]' : 'text-[#B45309]'
                 }`}
               >
                 {avgYieldDiff >= 0 ? '+' : ''}
@@ -388,21 +383,21 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
 
         {/* Economic Tier Breakdown */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400">
-            <span className="flex items-center gap-1.5">
-              <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500">
+            <span className="flex items-center gap-1.5 font-semibold text-slate-700">
+              <TrendingUp className="w-3.5 h-3.5 text-blue-600" />
               Escala Tarifaria Proyectada (ARS)
             </span>
           </div>
 
-          <div className="divide-y divide-white/[0.06] rounded-xl bg-[#07090E] border border-white/[0.07] overflow-hidden text-xs">
-            <div className="p-3 flex items-center justify-between">
+          <div className="divide-y divide-slate-200 rounded-xl bg-[#F8FAFC] border border-slate-200 overflow-hidden text-xs">
+            <div className="p-3 flex items-center justify-between bg-white">
               <div>
-                <div className="font-semibold text-slate-200">Base Semicama</div>
+                <div className="font-semibold text-slate-900">Base Semicama</div>
                 <div className="text-[11px] text-slate-500">Tarifa troncal estándar (1.00x)</div>
               </div>
               <div className="text-right font-mono-tabular">
-                <div className="font-bold text-amber-400 text-sm">
+                <div className="font-bold text-blue-700 text-sm">
                   {formatARS(ruta.precio_base)}
                 </div>
                 <div className="text-[10px] text-slate-500">
@@ -413,11 +408,11 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
 
             <div className="p-3 flex items-center justify-between">
               <div>
-                <div className="font-semibold text-sky-300">Cama Ejecutivo (+25%)</div>
+                <div className="font-semibold text-slate-800">Cama Ejecutivo (+25%)</div>
                 <div className="text-[11px] text-slate-500">Reclinación 160° · Servicio a bordo</div>
               </div>
               <div className="text-right font-mono-tabular">
-                <div className="font-bold text-slate-100 text-sm">
+                <div className="font-bold text-slate-900 text-sm">
                   {formatARS(tarifaCamaEjecutivo)}
                 </div>
                 <div className="text-[10px] text-slate-500">
@@ -428,11 +423,11 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
 
             <div className="p-3 flex items-center justify-between">
               <div>
-                <div className="font-semibold text-amber-300">Suite Primera Clase (+45%)</div>
+                <div className="font-semibold text-indigo-700">Suite Primera Clase (+45%)</div>
                 <div className="text-[11px] text-slate-500">Butaca 180° Box Privado</div>
               </div>
               <div className="text-right font-mono-tabular">
-                <div className="font-bold text-slate-100 text-sm">
+                <div className="font-bold text-slate-900 text-sm">
                   {formatARS(tarifaSuitePrimera)}
                 </div>
                 <div className="text-[10px] text-slate-500">
@@ -445,9 +440,9 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
 
         {/* Suggested Fleet Units for this Corridor */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400">
-            <span className="flex items-center gap-1.5">
-              <Bus className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500">
+            <span className="flex items-center gap-1.5 font-semibold text-slate-700">
+              <Bus className="w-3.5 h-3.5 text-emerald-600" />
               Unidades Sugeridas para Despacho
             </span>
             <span>{suggestedVehiculos.length} disp.</span>
@@ -459,23 +454,23 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
               return (
                 <div
                   key={v.id}
-                  className="p-2.5 rounded-lg bg-[#07090E] border border-white/[0.06] flex items-center justify-between gap-2 text-xs"
+                  className="p-2.5 rounded-lg bg-[#F8FAFC] border border-slate-200 flex items-center justify-between gap-2 text-xs"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <span className="px-2 py-0.5 rounded bg-[#131926] border border-white/[0.1] font-mono-tabular font-bold text-slate-100 text-[11px]">
+                    <span className="px-2 py-0.5 rounded bg-white border border-slate-300 font-mono-tabular font-bold text-slate-900 text-[11px]">
                       {formatPatenteMercosur(v.patente)}
                     </span>
                     <div className="truncate">
-                      <span className="text-slate-300 font-medium">{v.interno || 'FLOTA'}</span>
-                      <span className="text-slate-500 mx-1">·</span>
-                      <span className="text-[11px] text-slate-400">{badge.shortLabel}</span>
+                      <span className="text-slate-800 font-semibold">{v.interno || 'FLOTA'}</span>
+                      <span className="text-slate-400 mx-1">·</span>
+                      <span className="text-[11px] text-slate-600">{badge.shortLabel}</span>
                     </div>
                   </div>
                   {onOpenLayoutForVehicle && (
                     <button
                       type="button"
                       onClick={() => onOpenLayoutForVehicle(v.id)}
-                      className="text-[11px] font-mono-tabular text-amber-400 hover:text-amber-300 shrink-0 cursor-pointer"
+                      className="text-[11px] font-mono-tabular font-semibold text-blue-600 hover:text-blue-800 shrink-0 cursor-pointer"
                     >
                       Plano ({v.capacidad_asientos}p) →
                     </button>
@@ -487,13 +482,13 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
         </div>
 
         {/* Quick Inspector Actions */}
-        <div className="grid grid-cols-2 gap-2.5 pt-2 border-t border-white/[0.07]">
+        <div className="grid grid-cols-2 gap-2.5 pt-2 border-t border-slate-200">
           <button
             type="button"
             onClick={(e) => openEditModal(ruta, e)}
-            className="btn-tactile py-2.5 px-3 rounded-lg bg-[#131926] hover:bg-slate-800 border border-white/[0.1] text-xs font-semibold text-slate-100 flex items-center justify-center gap-1.5 cursor-pointer"
+            className="btn-tactile py-2.5 px-3 rounded-lg bg-white hover:bg-slate-50 border border-slate-300 text-xs font-semibold text-slate-800 flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <Edit3 className="w-3.5 h-3.5 text-amber-400" />
+            <Edit3 className="w-3.5 h-3.5 text-blue-600" />
             <span>Editar Traza</span>
           </button>
 
@@ -503,8 +498,8 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
             onClick={(e) => handleToggleEstado(ruta, e)}
             className={`btn-tactile py-2.5 px-3 rounded-lg border text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer ${
               ruta.activa
-                ? 'border-orange-500/35 bg-orange-500/10 hover:bg-orange-500/20 text-orange-300'
-                : 'border-emerald-500/35 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300'
+                ? 'border-amber-200 bg-[#FEF3C7] hover:bg-amber-100 text-[#B45309]'
+                : 'border-emerald-200 bg-[#DCFCE7] hover:bg-emerald-100 text-[#15803D]'
             }`}
           >
             <Power className="w-3.5 h-3.5" />
@@ -518,16 +513,16 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
   return (
     <div className="space-y-5 pb-20 lg:pb-6">
       {/* Header Banner */}
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between bg-[#0D111A] border border-white/[0.07] rounded-xl p-5">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between bg-white border border-slate-200 rounded-xl p-5 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
         <div className="space-y-1">
-          <div className="flex items-center gap-2 text-[11px] font-mono-tabular uppercase tracking-widest text-amber-400">
+          <div className="flex items-center gap-2 text-[11px] font-mono-tabular uppercase tracking-widest text-blue-600 font-semibold">
             <Compass className="w-3.5 h-3.5" />
             <span>MÓDULO 01 · RED TRONCAL & TARIFARIO · EVE-5</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-100 font-display">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 font-display">
             Catálogo de Rutas y Telemetría de Corredores
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 max-w-2xl">
+          <p className="text-xs sm:text-sm text-slate-600 max-w-2xl">
             Seleccioná cualquier corredor para inspeccionar su escala tarifaria proyectada, rendimiento por kilómetro (`$/km`) y unidades sugeridas.
           </p>
         </div>
@@ -537,16 +532,16 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
             type="button"
             onClick={() => onRefresh()}
             disabled={loading}
-            className="btn-tactile inline-flex items-center gap-2 px-3.5 py-2.5 rounded-lg border border-white/[0.08] bg-[#07090E] hover:bg-[#131926] text-slate-300 text-xs font-medium cursor-pointer"
+            className="btn-tactile inline-flex items-center gap-2 px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-amber-400' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-blue-600' : ''}`} />
             <span>Sincronizar</span>
           </button>
 
           <button
             type="button"
             onClick={openCreateModal}
-            className="btn-tactile inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#F59E0B] hover:bg-amber-400 text-slate-950 font-semibold text-xs sm:text-sm shadow-[0_0_24px_rgba(245,158,11,0.28)] cursor-pointer"
+            className="btn-tactile inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#2563EB] hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm shadow-sm cursor-pointer"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Nueva Ruta</span>
@@ -554,34 +549,34 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
         </div>
       </div>
 
-      {/* Stripe / Vercel Precision 1px Border KPI Strip */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 bg-[#0D111A] border border-white/[0.07] rounded-xl overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-white/[0.07]">
+      {/* Stripe / Apple Precision 1px Border KPI Strip */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 bg-white border border-slate-200 rounded-xl overflow-hidden divide-y sm:divide-y-0 sm:divide-x divide-slate-200 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
         <div className="p-4">
-          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400">
+          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500">
             <span>Rutas Operativas</span>
-            <RouteIcon className="w-3.5 h-3.5 text-emerald-400" />
+            <RouteIcon className="w-3.5 h-3.5 text-emerald-600" />
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono-tabular text-slate-100">
+            <span className="text-2xl font-bold font-mono-tabular text-slate-900">
               {kpis.rutasActivas}
             </span>
             <span className="text-xs font-mono-tabular text-slate-500">
               / {kpis.totalRutas} totales
             </span>
           </div>
-          <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-emerald-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-[#15803D] font-medium">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
             <span>Despacho CNRT activo</span>
           </div>
         </div>
 
         <div className="p-4">
-          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400">
+          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500">
             <span>Extensión de Red</span>
-            <MapPin className="w-3.5 h-3.5 text-amber-400" />
+            <MapPin className="w-3.5 h-3.5 text-blue-600" />
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono-tabular text-slate-100">
+            <span className="text-2xl font-bold font-mono-tabular text-slate-900">
               {formatKm(kpis.totalKmRed)}
             </span>
           </div>
@@ -591,12 +586,12 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
         </div>
 
         <div className="p-4">
-          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400">
+          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500">
             <span>Tarifa Base Media</span>
-            <DollarSign className="w-3.5 h-3.5 text-amber-400" />
+            <DollarSign className="w-3.5 h-3.5 text-blue-600" />
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-2xl font-bold font-mono-tabular text-amber-400">
+            <span className="text-2xl font-bold font-mono-tabular text-blue-600">
               {formatARS(kpis.tarifaPromedio)}
             </span>
           </div>
@@ -606,12 +601,12 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
         </div>
 
         <div className="p-4">
-          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400">
+          <div className="flex items-center justify-between text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500">
             <span>Yield Promedio Red</span>
-            <Activity className="w-3.5 h-3.5 text-emerald-400" />
+            <Activity className="w-3.5 h-3.5 text-emerald-600" />
           </div>
           <div className="mt-2 flex items-baseline gap-1.5">
-            <span className="text-2xl font-bold font-mono-tabular text-slate-100">
+            <span className="text-2xl font-bold font-mono-tabular text-slate-900">
               {formatARSDecimal(kpis.precioPorKmPromedio)}
             </span>
             <span className="text-xs font-mono-tabular text-slate-500">/ km</span>
@@ -623,23 +618,23 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
       </div>
 
       {/* Filter Bar */}
-      <div className="bg-[#0D111A] border border-white/[0.07] rounded-xl p-3.5 space-y-3">
+      <div className="bg-white border border-slate-200 rounded-xl p-3.5 space-y-3 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5">
           <div className="md:col-span-5 relative">
-            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Filtrar por terminal de origen, destino o ID..."
               aria-label="Buscar ruta"
-              className="w-full pl-9 pr-8 py-2 bg-[#07090E] border border-white/[0.08] rounded-lg text-xs sm:text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-500/70"
+              className="w-full pl-9 pr-8 py-2 bg-[#F8FAFC] border border-slate-200 rounded-lg text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-colors"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 p-1"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -651,7 +646,7 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
               value={selectedOrigen}
               onChange={(e) => setSelectedOrigen(e.target.value)}
               aria-label="Filtrar por ciudad de origen"
-              className="w-full px-3 py-2 bg-[#07090E] border border-white/[0.08] rounded-lg text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-amber-500/70"
+              className="w-full px-3 py-2 bg-[#F8FAFC] border border-slate-200 rounded-lg text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-blue-600"
             >
               <option value="ALL">Origen: Todas las terminales</option>
               {origenesDisponibles.map((ciudad) => (
@@ -667,7 +662,7 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
               value={selectedDestino}
               onChange={(e) => setSelectedDestino(e.target.value)}
               aria-label="Filtrar por ciudad de destino"
-              className="w-full px-3 py-2 bg-[#07090E] border border-white/[0.08] rounded-lg text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-amber-500/70"
+              className="w-full px-3 py-2 bg-[#F8FAFC] border border-slate-200 rounded-lg text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-blue-600"
             >
               <option value="ALL">Destino: Todas las terminales</option>
               {destinosDisponibles.map((ciudad) => (
@@ -682,17 +677,17 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
             <button
               type="button"
               onClick={resetFilters}
-              className="w-full md:w-auto px-3 py-2 rounded-lg border border-white/[0.08] bg-[#07090E] hover:bg-[#131926] text-xs text-slate-300 font-medium cursor-pointer"
+              className="w-full md:w-auto px-3 py-2 rounded-lg border border-slate-200 bg-[#F8FAFC] hover:bg-slate-100 text-xs text-slate-600 font-semibold cursor-pointer"
             >
               Reset
             </button>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-white/[0.06]">
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-200/80">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-mono-tabular uppercase tracking-wider text-slate-400 mr-1 flex items-center gap-1">
-              <Filter className="w-3 h-3 text-amber-400" /> Estado:
+            <span className="text-[11px] font-mono-tabular uppercase tracking-wider text-slate-500 mr-1 flex items-center gap-1">
+              <Filter className="w-3 h-3 text-blue-600" /> Estado:
             </span>
             {(
               [
@@ -705,10 +700,10 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                 key={pill.id}
                 type="button"
                 onClick={() => setStatusFilter(pill.id)}
-                className={`btn-tactile px-2.5 py-1 rounded-md text-xs font-medium cursor-pointer ${
+                className={`btn-tactile px-2.5 py-1 rounded-md text-xs font-semibold cursor-pointer ${
                   statusFilter === pill.id
-                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                    : 'bg-[#07090E] text-slate-400 border border-white/[0.07] hover:text-slate-200'
+                    ? 'bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE]'
+                    : 'bg-[#F8FAFC] text-slate-600 border border-slate-200 hover:text-slate-900'
                 }`}
               >
                 {pill.label}
@@ -716,8 +711,8 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
             ))}
           </div>
 
-          <div className="text-xs font-mono-tabular text-slate-400">
-            Mostrando <span className="text-slate-100 font-semibold">{filteredRutas.length}</span> de{' '}
+          <div className="text-xs font-mono-tabular text-slate-500">
+            Mostrando <span className="text-slate-900 font-bold">{filteredRutas.length}</span> de{' '}
             {rutas.length} corredores
           </div>
         </div>
@@ -726,11 +721,11 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
       {/* SPLIT CANVAS: Left Table/Cards (7 cols) + Right Contextual Route Inspector (5 cols) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* Left Ledger */}
-        <div className="lg:col-span-7 xl:col-span-8 bg-[#0D111A] border border-white/[0.07] rounded-xl overflow-hidden shadow-xl">
+        <div className="lg:col-span-7 xl:col-span-8 bg-white border border-slate-200 rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-white/[0.07] bg-[#07090E] text-[10px] font-mono-tabular uppercase tracking-wider text-slate-400">
+                <tr className="border-b border-slate-200 bg-[#F8FAFC] text-[10px] font-mono-tabular uppercase tracking-wider text-slate-500">
                   <th className="py-3 px-4">Corredor / Traza Nacional</th>
                   <th className="py-3 px-3 text-right">Tarifa Base</th>
                   <th className="py-3 px-3 text-right hidden sm:table-cell">Yield $/KM</th>
@@ -738,13 +733,13 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                   <th className="py-3 px-4 text-right">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.06] text-sm">
+              <tbody className="divide-y divide-slate-200 text-sm">
                 {filteredRutas.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="py-12 px-4 text-center">
                       <div className="max-w-sm mx-auto space-y-2">
-                        <RouteIcon className="w-7 h-7 text-slate-500 mx-auto" />
-                        <p className="text-slate-200 font-medium text-sm">
+                        <RouteIcon className="w-7 h-7 text-slate-400 mx-auto" />
+                        <p className="text-slate-800 font-semibold text-sm">
                           Sin corredores para el filtro activo
                         </p>
                         <p className="text-xs text-slate-500">
@@ -766,10 +761,10 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                         onClick={() => handleSelectRutaForInspector(ruta)}
                         className={`group transition-colors cursor-pointer ${
                           isSelected
-                            ? 'bg-amber-500/[0.08]'
+                            ? 'bg-[#EFF6FF]/90'
                             : ruta.activa
-                            ? 'hover:bg-white/[0.03]'
-                            : 'bg-[#07090E]/60 opacity-65 hover:opacity-95'
+                            ? 'hover:bg-slate-50'
+                            : 'bg-slate-50/60 opacity-75 hover:opacity-100'
                         }`}
                       >
                         <td className="py-3.5 px-4">
@@ -778,28 +773,28 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                               <span
                                 className={`w-2 h-2 rounded-full shrink-0 ${
                                   isSelected
-                                    ? 'bg-amber-400 shadow-[0_0_8px_#F59E0B]'
+                                    ? 'bg-blue-600 ring-3 ring-blue-100'
                                     : ruta.activa
-                                    ? 'bg-emerald-400'
-                                    : 'bg-slate-600'
+                                    ? 'bg-[#10B981]'
+                                    : 'bg-slate-400'
                                 }`}
                               />
-                              <span className="font-semibold text-slate-100 text-xs sm:text-sm">
+                              <span className="font-semibold text-slate-900 text-xs sm:text-sm">
                                 {ruta.origen}
                               </span>
 
-                              <span className="inline-flex items-center gap-1 font-mono-tabular text-[11px] text-amber-400">
+                              <span className="inline-flex items-center gap-1 font-mono-tabular text-[11px] font-semibold text-blue-600">
                                 <span>──[{ruta.distancia_km} km]──►</span>
                               </span>
 
-                              <span className="font-semibold text-slate-100 text-xs sm:text-sm">
+                              <span className="font-semibold text-slate-900 text-xs sm:text-sm">
                                 {ruta.destino}
                               </span>
                             </div>
 
                             <div className="flex items-center gap-2.5 text-[11px] font-mono-tabular text-slate-500 pl-4">
                               <span className="flex items-center gap-1">
-                                <Clock className="w-3 h-3 text-slate-500" /> ~{estHours}h
+                                <Clock className="w-3 h-3 text-slate-400" /> ~{estHours}h
                               </span>
                               <span>·</span>
                               <span>ID {ruta.id.slice(0, 6).toUpperCase()}</span>
@@ -807,22 +802,22 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                           </div>
                         </td>
 
-                        <td className="py-3.5 px-3 text-right font-mono-tabular font-bold text-amber-400 whitespace-nowrap text-xs sm:text-sm">
+                        <td className="py-3.5 px-3 text-right font-mono-tabular font-bold text-slate-900 whitespace-nowrap text-xs sm:text-sm">
                           {formatARS(ruta.precio_base)}
                         </td>
 
-                        <td className="py-3.5 px-3 text-right font-mono-tabular text-xs text-slate-300 whitespace-nowrap hidden sm:table-cell">
+                        <td className="py-3.5 px-3 text-right font-mono-tabular text-xs text-slate-600 whitespace-nowrap hidden sm:table-cell">
                           {formatARSDecimal(costoPorKm)}
                         </td>
 
                         <td className="py-3.5 px-3 text-center whitespace-nowrap">
                           {ruta.activa ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/12 text-emerald-300 border border-emerald-500/30">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#DCFCE7] text-[#15803D] border border-[#A7F3D0]">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
                               Activa
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-800/80 text-slate-400 border border-white/[0.08]">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#F1F5F9] text-[#64748B] border border-[#E2E8F0]">
                               Pausada
                             </span>
                           )}
@@ -833,10 +828,10 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                             <button
                               type="button"
                               onClick={(e) => openEditModal(ruta, e)}
-                              className="btn-tactile p-1.5 rounded-lg border border-white/[0.08] bg-[#07090E] hover:bg-[#131926] text-slate-300 cursor-pointer"
+                              className="btn-tactile p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 cursor-pointer"
                               title="Editar ruta"
                             >
-                              <Edit3 className="w-3.5 h-3.5 text-amber-400" />
+                              <Edit3 className="w-3.5 h-3.5 text-blue-600" />
                             </button>
                             <button
                               type="button"
@@ -844,8 +839,8 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                               onClick={(e) => handleToggleEstado(ruta, e)}
                               className={`btn-tactile p-1.5 rounded-lg border cursor-pointer ${
                                 ruta.activa
-                                  ? 'border-orange-500/30 bg-orange-500/10 text-orange-300'
-                                  : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300'
+                                  ? 'border-amber-200 bg-[#FEF3C7] text-[#B45309]'
+                                  : 'border-emerald-200 bg-[#DCFCE7] text-[#15803D]'
                               }`}
                               title={ruta.activa ? 'Desactivar ruta' : 'Reactivar ruta'}
                             >
@@ -853,7 +848,7 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                             </button>
                             <ChevronRight
                               className={`w-4 h-4 transition-transform ${
-                                isSelected ? 'text-amber-400 translate-x-0.5' : 'text-slate-600'
+                                isSelected ? 'text-blue-600 translate-x-0.5' : 'text-slate-400'
                               }`}
                             />
                           </div>
@@ -868,7 +863,7 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
         </div>
 
         {/* Right Contextual Inspector (Desktop Sticky Panel) */}
-        <aside className="hidden lg:block lg:col-span-5 xl:col-span-4 bg-[#131926] border border-white/[0.09] rounded-xl p-5 sticky top-20 shadow-2xl">
+        <aside className="hidden lg:block lg:col-span-5 xl:col-span-4 bg-white border border-slate-200 rounded-xl p-5 sticky top-20 shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
           {inspectedRuta ? (
             renderInspectorContent(inspectedRuta)
           ) : (
@@ -882,14 +877,14 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
       {/* Mobile / iPhone Slide-Up Bottom Sheet Inspector */}
       {mobileInspectorOpen && inspectedRuta && (
         <div
-          className="fixed inset-0 z-50 lg:hidden flex flex-col justify-end bg-black/75 backdrop-blur-sm animate-modal-backdrop"
+          className="fixed inset-0 z-50 lg:hidden flex flex-col justify-end bg-slate-900/40 backdrop-blur-xs animate-modal-backdrop"
           onClick={() => setMobileInspectorOpen(false)}
         >
           <div
-            className="bg-[#131926] border-t border-white/[0.14] rounded-t-2xl p-5 max-h-[85vh] overflow-y-auto pb-safe-bottom animate-sheet-up"
+            className="bg-white border-t border-slate-200 rounded-t-2xl p-5 max-h-[85vh] overflow-y-auto pb-safe-bottom animate-sheet-up shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-10 h-1 rounded-full bg-slate-600 mx-auto mb-4" />
+            <div className="w-10 h-1 rounded-full bg-slate-300 mx-auto mb-4" />
             {renderInspectorContent(inspectedRuta)}
           </div>
         </div>
@@ -898,18 +893,18 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
       {/* Modal: Alta y Edición de Ruta con validación en vivo y 409 DUPLICATE_ROUTE */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-modal-backdrop"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs animate-modal-backdrop"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-ruta-title"
         >
-          <div className="w-full max-w-lg bg-[#131926] border border-white/[0.12] rounded-2xl shadow-2xl overflow-hidden animate-modal-panel">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.08] bg-[#07090E]/80">
+          <div className="w-full max-w-lg bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden animate-modal-panel">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-[#F8FAFC]">
               <div>
-                <span className="text-[10px] font-mono-tabular uppercase tracking-widest text-amber-400">
+                <span className="text-[10px] font-mono-tabular uppercase tracking-widest text-blue-600 font-semibold">
                   {editingRuta ? 'EDICIÓN DE CORREDOR' : 'ALTA DE CORREDOR NACIONAL'}
                 </span>
-                <h2 id="modal-ruta-title" className="text-lg font-bold text-slate-100 font-display">
+                <h2 id="modal-ruta-title" className="text-lg font-bold text-slate-900 font-display">
                   {editingRuta
                     ? `${editingRuta.origen} → ${editingRuta.destino}`
                     : 'Registrar Nueva Ruta Comercial'}
@@ -918,7 +913,7 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-white/[0.06]"
+                className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-200/60"
                 aria-label="Cerrar modal"
               >
                 <X className="w-5 h-5" />
@@ -927,27 +922,27 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
 
             <form onSubmit={handleSaveRuta} className="p-6 space-y-4">
               {formError && (
-                <div className="p-3.5 rounded-xl bg-rose-500/12 border border-rose-500/40 flex items-start gap-3 text-rose-200 text-xs">
-                  <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                <div className="p-3.5 rounded-xl bg-rose-50 border border-rose-200 flex items-start gap-3 text-rose-800 text-xs">
+                  <AlertTriangle className="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
                   <div className="space-y-1">
-                    <div className="font-mono-tabular font-semibold uppercase tracking-wider text-rose-300">
+                    <div className="font-mono-tabular font-bold uppercase tracking-wider text-rose-700">
                       {formError.code === 'DUPLICATE_ROUTE'
                         ? 'HTTP 409 · DUPLICATE_ROUTE (Ruta Duplicada)'
                         : `Código: ${formError.code || 'VALIDATION_ERROR'}`}
                     </div>
-                    <p className="text-rose-100/90 leading-relaxed">{formError.message}</p>
+                    <p className="text-rose-700 leading-relaxed">{formError.message}</p>
                   </div>
                 </div>
               )}
 
               {!formError && liveDuplicateWarning && (
-                <div className="p-3 rounded-xl bg-amber-500/12 border border-amber-500/35 flex items-start gap-2.5 text-amber-200 text-xs">
-                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                <div className="p-3 rounded-xl bg-[#FEF3C7] border border-[#FDE68A] flex items-start gap-2.5 text-[#B45309] text-xs">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-semibold text-amber-300">
+                    <span className="font-bold">
                       Detección preventiva (409 DUPLICATE_ROUTE):
                     </span>{' '}
-                    Ya existe una ruta activa o inactiva entre{' '}
+                    Ya existe una ruta registrada entre{' '}
                     <strong className="font-mono-tabular">{liveDuplicateWarning.origen}</strong> y{' '}
                     <strong className="font-mono-tabular">{liveDuplicateWarning.destino}</strong>.
                   </div>
@@ -958,7 +953,7 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                 <div>
                   <label
                     htmlFor="ruta-origen"
-                    className="block text-xs font-medium text-slate-300 mb-1.5"
+                    className="block text-xs font-semibold text-slate-700 mb-1.5"
                   >
                     Ciudad / Terminal de Origen *
                   </label>
@@ -972,14 +967,14 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                       if (formError) setFormError(null);
                     }}
                     placeholder="Ej: Buenos Aires (Retiro)"
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#07090E] border border-white/[0.1] text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#F8FAFC] border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="ruta-destino"
-                    className="block text-xs font-medium text-slate-300 mb-1.5"
+                    className="block text-xs font-semibold text-slate-700 mb-1.5"
                   >
                     Ciudad / Terminal de Destino *
                   </label>
@@ -993,7 +988,7 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                       if (formError) setFormError(null);
                     }}
                     placeholder="Ej: San Carlos de Bariloche"
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#07090E] border border-white/[0.1] text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#F8FAFC] border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white"
                   />
                 </div>
               </div>
@@ -1002,7 +997,7 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                 <div>
                   <label
                     htmlFor="ruta-distancia"
-                    className="block text-xs font-medium text-slate-300 mb-1.5"
+                    className="block text-xs font-semibold text-slate-700 mb-1.5"
                   >
                     Distancia Oficial (KM) *
                   </label>
@@ -1015,14 +1010,14 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                     value={formDistancia}
                     onChange={(e) => setFormDistancia(e.target.value)}
                     placeholder="Ej: 404"
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#07090E] border border-white/[0.1] text-sm font-mono-tabular text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#F8FAFC] border border-slate-300 text-sm font-mono-tabular text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="ruta-precio"
-                    className="block text-xs font-medium text-slate-300 mb-1.5"
+                    className="block text-xs font-semibold text-slate-700 mb-1.5"
                   >
                     Tarifa Base (ARS $) *
                   </label>
@@ -1035,26 +1030,26 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                     value={formPrecio}
                     onChange={(e) => setFormPrecio(e.target.value)}
                     placeholder="Ej: 34800"
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#07090E] border border-white/[0.1] text-sm font-mono-tabular text-amber-400 placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#F8FAFC] border border-slate-300 text-sm font-mono-tabular font-bold text-blue-700 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white"
                   />
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-[#07090E] border border-white/[0.08] space-y-2">
-                <div className="flex items-center justify-between text-[11px] font-mono-tabular text-slate-400">
-                  <span className="flex items-center gap-1.5 text-amber-400">
+              <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-slate-200 space-y-2">
+                <div className="flex items-center justify-between text-[11px] font-mono-tabular text-slate-500">
+                  <span className="flex items-center gap-1.5 text-blue-600 font-semibold">
                     <Sparkles className="w-3.5 h-3.5" /> Telemetría Previa
                   </span>
                   <span>
                     Yield:{' '}
-                    <strong className="text-slate-100">
+                    <strong className="text-slate-900">
                       {formatARSDecimal(previewCostPerKm)}/km
                     </strong>
                   </span>
                 </div>
-                <div className="flex items-center justify-between gap-2 text-xs font-medium text-slate-200 pt-1">
+                <div className="flex items-center justify-between gap-2 text-xs font-semibold text-slate-800 pt-1">
                   <span className="truncate">{formOrigen.trim() || 'Terminal Origen'}</span>
-                  <span className="font-mono-tabular text-amber-400 shrink-0">
+                  <span className="font-mono-tabular text-blue-600 shrink-0">
                     ──[{Number(formDistancia) || 0} km]──►
                   </span>
                   <span className="truncate text-right">
@@ -1063,18 +1058,18 @@ export const RoutesView: React.FC<RoutesViewProps> = ({
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/[0.08]">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="btn-tactile px-4 py-2 rounded-lg border border-white/[0.1] bg-[#07090E] hover:bg-slate-800 text-xs font-medium text-slate-300 cursor-pointer"
+                  className="btn-tactile px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="btn-tactile inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-[#F59E0B] hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-semibold text-xs shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer"
+                  className="btn-tactile inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-[#2563EB] hover:bg-blue-700 disabled:opacity-50 text-white font-semibold text-xs shadow-sm cursor-pointer"
                 >
                   <CheckCircle2 className="w-4 h-4" />
                   <span>

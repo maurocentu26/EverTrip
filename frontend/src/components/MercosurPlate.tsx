@@ -9,7 +9,7 @@ interface MercosurPlateProps {
 
 /**
  * Authentic Argentine Mercosur License Plate ("AB 123 CD")
- * Designed with precision typography (JetBrains Mono tabular-nums),
+ * Designed for Nordic Daylight precision cards with crisp slate border,
  * official Mercosur Cobalt Top Header + Argentine flag emblem.
  */
 export const MercosurPlate: React.FC<MercosurPlateProps> = ({
@@ -39,14 +39,14 @@ export const MercosurPlate: React.FC<MercosurPlateProps> = ({
 
   return (
     <div
-      className={`inline-flex flex-col overflow-hidden border border-slate-400/80 bg-[#F8FAFC] shadow-[0_2px_10px_rgba(0,0,0,0.45),inset_0_0_0_1px_rgba(15,23,42,0.18)] select-none shrink-0 ${sizeStyles.wrapper} ${className}`}
+      className={`inline-flex flex-col overflow-hidden border border-slate-300 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.08),inset_0_0_0_1px_rgba(15,23,42,0.06)] select-none shrink-0 ${sizeStyles.wrapper} ${className}`}
       title={`Dominio Mercosur República Argentina: ${formatted}`}
     >
       {/* Mercosur Official Blue Band */}
       <div
         className={`flex items-center justify-between bg-[#003399] text-white font-semibold uppercase tracking-wider leading-none ${sizeStyles.header}`}
       >
-        <span className="flex items-center gap-1 opacity-90">
+        <span className="flex items-center gap-1 opacity-95">
           <span className="inline-block w-1.5 h-1.5 rounded-full bg-sky-300" />
           <span className="font-mono-tabular text-[6px] tracking-widest">MERCOSUR</span>
         </span>
@@ -63,7 +63,7 @@ export const MercosurPlate: React.FC<MercosurPlateProps> = ({
 
       {/* Plate Number Body */}
       <div
-        className={`flex items-center justify-center bg-gradient-to-b from-white via-[#F1F5F9] to-[#E2E8F0] text-[#090D16] font-mono-tabular font-bold leading-tight ${sizeStyles.body}`}
+        className={`flex items-center justify-center bg-gradient-to-b from-white via-[#F8FAFC] to-[#F1F5F9] text-[#0F172A] font-mono-tabular font-bold leading-tight ${sizeStyles.body}`}
       >
         {formatted}
       </div>

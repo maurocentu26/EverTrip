@@ -42,23 +42,23 @@ export function formatServiceTypeLabel(tipo: string): {
     return {
       label: 'Suite Primera Clase',
       shortLabel: 'Suite 1ª Clase',
-      badgeClass: 'bg-amber-500/15 text-amber-300 border-amber-500/35',
-      dotClass: 'bg-amber-400',
+      badgeClass: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+      dotClass: 'bg-indigo-600',
     };
   }
   if (normalized.includes('cama') && !normalized.includes('semi')) {
     return {
       label: 'Cama Ejecutivo',
       shortLabel: 'Cama Ejecutivo',
-      badgeClass: 'bg-sky-500/15 text-sky-300 border-sky-500/35',
-      dotClass: 'bg-sky-400',
+      badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
+      dotClass: 'bg-blue-600',
     };
   }
   return {
     label: 'Semicama',
     shortLabel: 'Semicama',
-    badgeClass: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/35',
-    dotClass: 'bg-emerald-400',
+    badgeClass: 'bg-sky-50 text-sky-700 border-sky-200',
+    dotClass: 'bg-sky-600',
   };
 }
 
@@ -71,20 +71,20 @@ export function formatEstadoVehiculoBadge(estado: string): {
   if (normalized === 'activo') {
     return {
       label: 'Operativo en Red',
-      badgeClass: 'bg-emerald-500/12 text-emerald-300 border-emerald-500/30',
-      dotClass: 'bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.7)]',
+      badgeClass: 'bg-[#DCFCE7] text-[#15803D] border-[#A7F3D0]',
+      dotClass: 'bg-[#10B981]',
     };
   }
   if (normalized === 'mantenimiento') {
     return {
       label: 'En Taller / Mant.',
-      badgeClass: 'bg-amber-500/12 text-amber-300 border-amber-500/30',
-      dotClass: 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.7)]',
+      badgeClass: 'bg-[#FEF3C7] text-[#B45309] border-[#FDE68A]',
+      dotClass: 'bg-amber-500',
     };
   }
   return {
     label: 'Fuera de Servicio',
-    badgeClass: 'bg-slate-800/90 text-slate-400 border-slate-700/80',
-    dotClass: 'bg-slate-500',
+    badgeClass: 'bg-[#F1F5F9] text-[#64748B] border-[#E2E8F0]',
+    dotClass: 'bg-slate-400',
   };
 }
