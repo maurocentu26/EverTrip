@@ -8,8 +8,8 @@ const PORT = Number(process.env.PORT) || 3001;
 
 async function bootstrap() {
   await store.init();
-  app.listen(PORT, () => {
-    console.log(`[EverTrip API] Servidor escuchando en http://localhost:${PORT}/v1 (Modo: ${store.getEngineMode()})`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`[EverTrip API] Servidor escuchando en http://0.0.0.0:${PORT}/v1 (Modo: ${store.getEngineMode()})`);
   });
 }
 
