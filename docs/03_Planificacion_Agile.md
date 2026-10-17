@@ -1,6 +1,8 @@
 # Planificación Agile y Tablero Jira - EverTrip
 ### Última actualización: Sprint 0 - Kickoff
 
+> Los IDs EVE-100 en adelante que aparecen en este plan son referencias de planificación, no claves vigentes del tablero. Consultar Jira antes de crear ramas o commits. Para el catálogo implementado, las UI corresponden a EVE-5 (Rutas), EVE-9 (Flota) y EVE-13 (Asientos). El rediseño Terminal se registra en [EVE-16](https://eversys.atlassian.net/browse/EVE-16), con su especificación en [05_Diseno_Consola_Terminal.md](05_Diseno_Consola_Terminal.md).
+
 Este documento desglosa el trabajo en Épicas, Historias de Usuario y **Sub-Tickets técnicos** (Frontend / Backend) para facilitar la asignación individual dentro del equipo.
 
 ---

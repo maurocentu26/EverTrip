@@ -1,0 +1,25 @@
+{
+  "generated": "2026-10-17T02:35:59.0406467Z",
+  "sections": [
+    {
+      "label": "Mockups",
+      "groups": [
+        {
+          "files": [
+            {
+              "label": "index.html",
+              "path": "mockups/evertrip-terminal/index.html"
+            }
+          ],
+          "slug": "evertrip-terminal"
+        }
+      ],
+      "id": "mockups"
+    },
+    {
+      "label": "Design Systems",
+      "groups": [],
+      "id": "design-systems"
+    }
+  ]
+}

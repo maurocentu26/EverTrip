@@ -27,3 +27,5 @@ Thumbs.db
 *.db
 
 *.tsbuildinfo
+
+backend/.data-cache.json

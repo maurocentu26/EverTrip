@@ -1,23 +1,47 @@
 @import "tailwindcss";
 
+/* Azul atlántico: shared by utilities and the application surfaces. */
+@theme {
+  --color-blue-50: #edf3fa;
+  --color-blue-100: #dfeaf5;
+  --color-blue-200: #c5def4;
+  --color-blue-300: #b3c7df;
+  --color-blue-400: #7e9fc3;
+  --color-blue-500: #486f9d;
+  --color-blue-600: #254f82;
+  --color-blue-700: #203f69;
+  --color-blue-800: #1d304c;
+  --color-blue-900: #203a59;
+  --color-blue-950: #152439;
+  --color-slate-50: #f1f4f8;
+  --color-slate-100: #eaf0f6;
+  --color-slate-200: #e0e6ef;
+  --color-slate-300: #c7d1de;
+  --color-slate-400: #7c8da2;
+  --color-slate-500: #606e81;
+  --color-slate-600: #526278;
+  --color-slate-700: #3d5069;
+  --color-slate-800: #2e3e54;
+  --color-slate-900: #243043;
+  --color-slate-950: #182233;
+}
+
 @layer base {
   :root {
     --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
-    --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
-    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 
-    /* Nordic Daylight Palette (Stripe / Apple Light Mode) */
-    --bg-canvas: #F8FAFC;
+    /* Azul atlántico */
+    --bg-canvas: var(--color-slate-50);
     --bg-surface: #FFFFFF;
-    --bg-subtle: #F1F5F9;
-    --border-hairline: #E2E8F0;
-    --border-hairline-hover: #CBD5E1;
+    --bg-subtle: var(--color-slate-100);
+    --border-hairline: var(--color-slate-200);
+    --border-hairline-hover: var(--color-slate-300);
 
-    --text-primary: #0F172A;
-    --text-secondary: #475569;
-    --text-tertiary: #64748B;
+    --text-primary: var(--color-slate-900);
+    --text-secondary: var(--color-slate-600);
+    --text-tertiary: var(--color-slate-500);
 
-    --accent-blue: #2563EB;
+    --accent-blue: var(--color-blue-600);
     --accent-emerald: #10B981;
     --accent-amber: #D97706;
   }
@@ -25,110 +49,22 @@
   body {
     background-color: var(--bg-canvas);
     color: var(--text-primary);
-    font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     letter-spacing: -0.011em;
     overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
   }
 
   h1, h2, h3, h4, .font-display {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Manrope', sans-serif;
     letter-spacing: -0.025em;
-    color: #0F172A;
+    color: var(--text-primary);
   }
 
   .font-mono-tabular {
     font-family: 'JetBrains Mono', monospace;
     font-variant-numeric: tabular-nums;
   }
-}
-
-/* Surface & Border utilities */
-.surface-card {
-  background-color: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
-}
-
-.surface-elevated {
-  background-color: #FFFFFF;
-  border: 1px solid #CBD5E1;
-  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.12), 0 1px 3px rgba(15, 23, 42, 0.05);
-}
-
-/* Precision operational console background pattern (Nordic Daylight) */
-.bg-console-grid {
-  background-color: #F8FAFC;
-  background-image:
-    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.045), transparent 55%),
-    linear-gradient(to right, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
-  background-size: 100% 100%, 32px 32px, 32px 32px;
-}
-
-/* Technical CAD Blueprint Grid in Light Mode */
-.bg-blueprint-grid {
-  background-color: #F1F5F9;
-  background-image:
-    radial-gradient(circle at 50% 15%, rgba(37, 99, 235, 0.06), transparent 65%),
-    linear-gradient(to right, rgba(37, 99, 235, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(37, 99, 235, 0.05) 1px, transparent 1px),
-    linear-gradient(to right, rgba(37, 99, 235, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(37, 99, 235, 0.1) 1px, transparent 1px);
-  background-size: 100% 100%, 16px 16px, 16px 16px, 80px 80px, 80px 80px;
-}
-
-/* Emil Kowalski tactile button press */
-.btn-tactile {
-  transition:
-    transform 140ms var(--ease-out-strong),
-    background-color 150ms ease,
-    border-color 150ms ease,
-    color 150ms ease,
-    box-shadow 150ms ease;
-}
-
-.btn-tactile:active:not(:disabled) {
-  transform: scale(0.97);
-}
-
-.seat-cell {
-  transition:
-    transform 140ms var(--ease-out-strong),
-    background-color 150ms ease,
-    border-color 150ms ease,
-    box-shadow 150ms ease;
-}
-
-.seat-cell:active:not(:disabled) {
-  transform: scale(0.94);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .seat-cell:hover:not(:disabled) {
-    transform: translateY(-1px);
-  }
-}
-
-/* Staggered list & inspector entrance */
-@keyframes consoleEnter {
-  from {
-    opacity: 0;
-    transform: translateY(6px) scale(0.99);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.animate-console-enter {
-  animation: consoleEnter 200ms var(--ease-out-strong) forwards;
-}
-
-@keyframes modalBackdropEnter {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 @keyframes modalPanelEnter {
@@ -142,62 +78,21 @@
   }
 }
 
-@keyframes sheetSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-modal-backdrop {
-  animation: modalBackdropEnter 160ms ease-out forwards;
-}
-
-.animate-modal-panel {
-  animation: modalPanelEnter 210ms var(--ease-out-strong) forwards;
-}
-
-.animate-sheet-up {
-  animation: sheetSlideUp 260ms var(--ease-drawer) forwards;
-}
-
-/* Safe area padding for iPhone thumb-zone bottom bar */
-.pb-safe-bottom {
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .btn-tactile,
-  .seat-cell,
-  .animate-console-enter,
-  .animate-modal-backdrop,
-  .animate-modal-panel,
-  .animate-sheet-up {
-    animation: none !important;
-    transition: opacity 150ms ease !important;
-    transform: none !important;
-  }
-}
-
-/* Custom subtle scrollbars for Nordic Daylight console */
+/* Subtle scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: var(--bg-subtle);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: var(--border-hairline-hover);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: var(--color-slate-400);
 }

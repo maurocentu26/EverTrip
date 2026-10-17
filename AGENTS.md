@@ -35,4 +35,4 @@ La documentación funcional, arquitectónica y de API de **EverTrip** se encuent
 - `backend/`: API REST en Node.js + Express + TypeScript (`PORT=3001`, prefijo `/v1`) + migraciones PostgreSQL (`backend/migrations/`) y store híbrido con datos semilla.
 - `frontend/`: Consola Operativa en React 18 + Vite + TypeScript + Tailwind CSS v4 (`PORT=5173`, `host: true` habilitado para pruebas en iPhone en red local).
 - `.agents/skills/`: Skills de diseño de **OpenDesign** (`frontend-design`, `emil-design-eng`, `web-design-guidelines`, `impeccable-design-polish`).
-- **Paleta y Estética:** *Nordic Daylight* (Modo Claro · Estilo Stripe / Apple: lienzo `#F8FAFC`, superficies `#FFFFFF`, bordes `1px #E2E8F0`, texto `#0F172A`, acento primario Azul Cobalto `#2563EB` y operativo Esmeralda `#15803D`).
+- **Paleta y Estética:** *Terminal · Azul atlántico* (EVE-16): lienzo `#F1F4F8`, superficies `#FFFFFF`, bordes `1px #E0E6EF`, texto `#243043`, primario `#254F82`, sidebar `#1D304C` y selección `#C5DEF4`. Sidebar desktop y navbar inferior móvil. Ver `./docs/05_Diseno_Consola_Terminal.md`.
