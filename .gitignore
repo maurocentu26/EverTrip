@@ -25,3 +25,5 @@ Thumbs.db
 # Database / SQLite fallback if used locally
 *.sqlite
 *.db
+
+*.tsbuildinfo
