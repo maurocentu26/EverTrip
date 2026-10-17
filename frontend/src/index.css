@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+    --bg-base: #090D16;
+    --bg-surface: #0F1623;
+    --bg-elevated: #141E30;
+  }
+
+  body {
+    background-color: #090D16;
+    color: #F1F5F9;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  .font-mono-tabular {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Precision operational console background pattern */
+.bg-console-grid {
+  background-color: #090D16;
+  background-image: 
+    linear-gradient(to right, rgba(30, 41, 59, 0.22) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(30, 41, 59, 0.22) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.bg-blueprint-grid {
+  background-color: #0A101D;
+  background-image: 
+    linear-gradient(to right, rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+    linear-gradient(to right, rgba(56, 189, 248, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+}
+
+/* Emil Kowalski tactile button press */
+.btn-tactile {
+  transition: transform 140ms var(--ease-out-strong), background-color 150ms ease, border-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+.btn-tactile:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.seat-cell {
+  transition: transform 140ms var(--ease-out-strong), background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.seat-cell:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .seat-cell:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+}
+
+/* Staggered list item entrance */
+@keyframes consoleEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-console-enter {
+  animation: consoleEnter 220ms var(--ease-out-strong) forwards;
+}
+
+@keyframes modalBackdropEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalPanelEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-modal-backdrop {
+  animation: modalBackdropEnter 180ms ease-out forwards;
+}
+
+.animate-modal-panel {
+  animation: modalPanelEnter 220ms var(--ease-out-strong) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-tactile,
+  .seat-cell,
+  .animate-console-enter,
+  .animate-modal-backdrop,
+  .animate-modal-panel {
+    animation: none !important;
+    transition: opacity 150ms ease !important;
+    transform: none !important;
+  }
+}
+
+/* Custom subtle scrollbars for operational console */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090D16;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
