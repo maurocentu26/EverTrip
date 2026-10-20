@@ -1,25 +1,34 @@
 {
-  "generated": "2026-10-17T02:35:59.0406467Z",
+  "generated": "2026-10-20T16:53:43.3136911Z",
   "sections": [
     {
       "label": "Mockups",
+      "id": "mockups",
       "groups": [
         {
+          "slug": "evertrip-layouts",
           "files": [
             {
-              "label": "index.html",
-              "path": "mockups/evertrip-terminal/index.html"
+              "path": "mockups/evertrip-layouts/index.html",
+              "label": "index.html"
             }
-          ],
-          "slug": "evertrip-terminal"
+          ]
+        },
+        {
+          "slug": "evertrip-terminal",
+          "files": [
+            {
+              "path": "mockups/evertrip-terminal/index.html",
+              "label": "index.html"
+            }
+          ]
         }
-      ],
-      "id": "mockups"
+      ]
     },
     {
       "label": "Design Systems",
-      "groups": [],
-      "id": "design-systems"
+      "id": "design-systems",
+      "groups": []
     }
   ]
 }

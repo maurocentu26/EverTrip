@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AlertCircle, Armchair, ArrowRight, BusFront, CalendarDays, Check, ChevronRight, Compass, Plus, Route, Search, X } from 'lucide-react';
+import { AlertCircle, Armchair, ArrowRight, BusFront, CalendarDays, Check, ChevronRight, Plus, Route, Search, X } from 'lucide-react';
 import { getConnectionSource, getRutas, getVehiculos, subscribeConnectionSource, formatPatenteMercosur, type Ruta, type Vehiculo } from './services/api';
 import { formatARS } from './utils/formatters';
 import { RoutesView } from './views/RoutesView';
@@ -8,13 +8,14 @@ import { LayoutEditorView } from './views/LayoutEditorView';
 import { TripsView } from './views/TripsView';
 import { Modal } from './components/Modal';
 import './terminal.css';
+import './dispatch.css';
 
 type ActiveModule = 'rutas' | 'flota' | 'layout' | 'viajes';
 interface ToastNotification { id: string; message: string; type: 'success' | 'warning' | 'error'; }
-const navItems = [{ id: 'rutas', label: 'Rutas', icon: Route }, { id: 'flota', label: 'Flota', icon: BusFront }, { id: 'layout', label: 'Asientos', icon: Armchair }, { id: 'viajes', label: 'Viajes', icon: CalendarDays }] as const;
+const navItems = [{ id: 'viajes', label: 'Salidas', icon: CalendarDays }, { id: 'rutas', label: 'Rutas', icon: Route }, { id: 'flota', label: 'Flota', icon: BusFront }, { id: 'layout', label: 'Asientos', icon: Armchair }] as const;
 
 export function App() {
-  const [activeModule, setActiveModule] = useState<ActiveModule>('rutas');
+  const [activeModule, setActiveModule] = useState<ActiveModule>('viajes');
   const [rutas, setRutas] = useState<Ruta[]>([]); const [vehiculos, setVehiculos] = useState<Vehiculo[]>([]);
   const [selectedRutaId, setSelectedRutaId] = useState<string | null>(null);
   const [selectedVehiculoId, setSelectedVehiculoId] = useState<string | null>(null);
@@ -56,9 +57,9 @@ export function App() {
   function openLayout(id: string) { setSelectedVehiculoId(id); setActiveModule('layout'); setCommandOpen(false); }
   function search() { setSelectedRutaId(null); setCommandQuery(''); setCommandOpen(true); }
   return <div className="et-app">
-    <aside className="et-sidebar"><button className="et-brand" aria-label="EverTrip, ir a Rutas" onClick={() => setActiveModule('rutas')}><span className="et-brand-symbol"><Route size={25}/></span><span>evertrip<span className="et-brand-period">.</span><small>TERMINAL</small></span></button><div className="et-workspace-label"><span className="et-workspace-avatar">ET</span><div><strong>Consola operativa</strong><span>Transporte de pasajeros</span></div></div><span className="et-nav-label">TU OPERACIÓN</span><nav aria-label="Navegación principal">{navItems.map(({ id,label,icon: Icon },i) => <button key={id} aria-current={activeModule === id ? 'page' : undefined} onClick={() => setActiveModule(id)} title={`${label} · Alt+${i+1}`}><Icon size={19}/><span>{label}</span><small>0{i+1}</small></button>)}</nav><div className="et-sidebar-bottom"><Compass size={26} strokeWidth={1.3}/><p>Más cerca.<br/><strong>Más lejos.</strong></p><span>Todo empieza con un destino.</span></div><div className="et-sidebar-footer"><span className="et-workspace-avatar">ET</span><div><strong>EverTrip</strong><span>Gestión de transporte</span></div></div></aside>
+    <aside className="et-sidebar"><button className="et-brand" aria-label="EverTrip, ir a Salidas" onClick={() => setActiveModule('viajes')}><span>evertrip<span className="et-brand-period">.</span><small>TERMINAL</small></span></button><div className="et-workspace-label"><span className="et-workspace-avatar">ET</span><div><strong>Consola operativa</strong><span>Transporte de pasajeros</span></div></div><span className="et-nav-label">OPERACIÓN</span><nav aria-label="Navegación principal">{navItems.map(({ id,label,icon: Icon },i) => <div className="et-nav-entry" key={id}>{i === 1 && <span className="et-nav-label">CATÁLOGOS</span>}<button key={id} aria-current={activeModule === id ? 'page' : undefined} onClick={() => setActiveModule(id)} title={`${label} · Alt+${i+1}`}><Icon size={19}/><span>{label}</span><small>0{i+1}</small></button></div>)}</nav><div className="et-sidebar-footer"><span className="et-workspace-avatar">ET</span><div><strong>EverTrip</strong><span>Gestión de transporte</span></div></div></aside>
     <div className="et-main-shell"><header className="et-topbar"><div className="et-breadcrumb"><span>Operación</span><ChevronRight size={14}/><strong>{navItems.find(n => n.id === activeModule)?.label}</strong></div><button className="et-command-trigger" aria-label="Buscar o ejecutar una acción" onClick={search}><Search size={16}/><span>Buscar o ejecutar una acción…</span><kbd>Ctrl K</kbd></button><span className={`et-connection ${connectionSource === 'api' ? '' : 'is-local'}`}><i/>{connectionSource === 'api' ? 'Conectado' : 'Modo local'}</span></header>
-      <main className="et-main">{loadError && <div className="et-load-error" role="alert"><AlertCircle size={18}/><p>{loadError}</p><button className="et-button et-secondary" onClick={() => void loadAllData()}>Reintentar</button></div>}
+      <main className="et-main">{import.meta.env.VITE_DEMO_MODE === 'true' && <div className="et-demo-banner" role="note"><strong>DEMO INTERACTIVA</strong><span>Datos ficticios · Edición pública habilitada · No ingreses datos personales.</span></div>}{loadError && <div className="et-load-error" role="alert"><AlertCircle size={18}/><p>{loadError}</p><button className="et-button et-secondary" onClick={() => void loadAllData()}>Reintentar</button></div>}
         {activeModule === 'rutas' && <RoutesView externalSelectedId={selectedRutaId} rutas={rutas} loading={loading} onRefresh={loadAllData} onNotify={addNotification} externalCreateTrigger={createRutaTrigger}/>}
         {activeModule === 'flota' && <FleetView vehiculos={vehiculos} loading={loading} onRefresh={loadAllData} onNotify={addNotification} onOpenLayoutEditor={openLayout} externalCreateTrigger={createVehiculoTrigger}/>}
         {activeModule === 'layout' && (loading && !vehiculos.length ? <div className="et-empty" role="status">Cargando unidades…</div> : <LayoutEditorView vehiculos={vehiculos} selectedVehiculoId={selectedVehiculoId} onSelectVehiculo={setSelectedVehiculoId} onRefresh={loadAllData} onNotify={addNotification}/>)}

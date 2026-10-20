@@ -16,6 +16,8 @@
 
 La programación requiere salida y llegada explícitas en horario argentino. Manifiestos, check-in, reservas y venta siguen siendo incrementos posteriores; no se dan por implementados al completar EVE-18.
 
+[EVE-23](https://eversys.atlassian.net/browse/EVE-23) aplica el layout A de Despacho: Salidas como inicio, agenda seleccionable y detalle lateral desktop/pantalla móvil. Implementación sobre los datos de EVE-18, sin adelantar reservas ni web pública. Ver `05_Diseno_Consola_Terminal.md` y los incrementos propuestos en `06_Referencias_UX_y_Proximos_Tickets.md`.
+
 Este documento desglosa el trabajo en Épicas, Historias de Usuario y **Sub-Tickets técnicos** (Frontend / Backend) para facilitar la asignación individual dentro del equipo.
 
 ---

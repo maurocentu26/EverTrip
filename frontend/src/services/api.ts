@@ -428,7 +428,7 @@ async function requestApi<T>(path: string, options?: RequestInit): Promise<T> {
   const timeout = setTimeout(() => controller.abort(), 2200);
 
   try {
-    const res = await fetch(`/v1${path}`, {
+    const res = await fetch(`${(import.meta.env.VITE_API_URL || '').replace(/\/$/, '')}/v1${path}`, {
       ...options,
       headers: {
         'Content-Type': 'application/json',

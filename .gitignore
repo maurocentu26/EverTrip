@@ -29,3 +29,7 @@ Thumbs.db
 *.tsbuildinfo
 
 backend/.data-cache.json
+backend/.data-cache.json.tmp
+.vercel/
+**/.vercel/
+.railway/

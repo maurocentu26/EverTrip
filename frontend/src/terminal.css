@@ -37,15 +37,3 @@
 .et-table-scroll{position:relative}
 .et-tabs{max-width:100%;overflow-x:auto}
 @media(max-width:640px){.et-table{min-width:0}.et-table th:nth-child(2),.et-table td:nth-child(2),.et-table th:nth-child(4),.et-table td:nth-child(4){display:none}.et-table th,.et-table td{padding-inline:10px}.et-table td:last-child,.et-table th:last-child{padding-right:14px}.et-route-cell{gap:9px}.et-route-cell strong{font-size:12px}.et-route-cell>span:last-child>span{font-size:11px}.et-table .et-price{font-size:12px}}
-.et-trips-panel{margin-top:28px}
-.et-trip-filters{display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap;padding:0 22px 22px}
-.et-trip-filters label{display:flex;flex-direction:column;gap:7px;font-size:11px;color:var(--text-tertiary);min-width:140px;flex:1}
-.et-trip-filters input,.et-trip-filters select{min-height:44px;width:100%;max-width:100%;padding:9px 10px;border:1px solid var(--border-hairline);border-radius:6px;background:white;color:var(--text-primary);font:inherit;font-size:12px}
-.et-trip-filters input:focus-visible,.et-trip-filters select:focus-visible{outline:2px solid var(--color-blue-500);outline-offset:2px}
-.et-trip-table{min-width:960px}
-.et-trip-table tbody tr{cursor:default}
-.et-trip-table time{font-size:11px}
-.et-trip-destination{display:block;color:var(--text-tertiary);margin-top:5px}
-.et-trip-cards{display:none}
-.et-badge.is-blue{background:var(--color-blue-50);color:var(--color-blue-700)}
-@media(max-width:767px){.et-trips-desktop{display:none}.et-trip-cards{display:grid;gap:14px;padding:0 16px 20px}.et-trip-cards article{padding:18px;border:1px solid var(--border-hairline);border-radius:9px}.et-trip-cards h3{display:flex;flex-wrap:wrap;align-items:center;gap:8px;line-height:1.6;margin-top:16px}.et-trip-cards .et-eyebrow{font-size:10px;letter-spacing:1px}.et-trip-cards .et-detail-list{margin-bottom:0}.et-trip-cards .et-detail-list>div{font-size:11px}.et-trip-filters{padding-inline:16px;gap:14px 10px}.et-trip-filters label{min-width:calc(50% - 10px);max-width:100%}.et-trips-panel .et-list-title{align-items:flex-start;flex-direction:column;gap:8px}.et-trip-filters input,.et-trip-filters select{font-size:16px}.et-trip-filters>.et-text-button{width:100%;text-align:left}}
